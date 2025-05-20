@@ -68,7 +68,7 @@ public class GitToolWindow : EditorWindow
     [MenuItem("Tools/Git/Push", false, 3)]
     public static void GitPush()
     {
-        string output = RunGitCommand("push");
+        string output = RunGitCommand("push origin main");
         EditorUtility.DisplayDialog("Git Push", output, "OK");
     }
 
@@ -89,6 +89,7 @@ public class GitToolWindow : EditorWindow
             FileName = "git",
             Arguments = command,
             RedirectStandardOutput = true,
+            RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
             WorkingDirectory = projectFolder // Set the working directory to the Unity project

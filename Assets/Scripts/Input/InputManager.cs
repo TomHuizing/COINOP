@@ -36,15 +36,15 @@ public class InputManager : MonoBehaviour
             .Where(x => x.TryGetComponent<InputReceiver>(out _))
             .Select(x => x.GetComponent<InputReceiver>())
             .ToArray();
-        
-        if(receivers.Length == 0)
+
+        if (receivers.Length == 0)
         {
             HandleMouse(null); // Handle mouse events for no receivers
             return;
         }
 
         InputLayer minLayer = receivers.Min(x => x.Layer); // Get the minimum layer of the receivers
-        
+
         receivers = receivers
             .Where(x => x.Layer == minLayer) // Filter the receivers to only include those with the minimum layer
             .ToArray();
@@ -53,6 +53,8 @@ public class InputManager : MonoBehaviour
         {
             HandleMouse(receiver); // Handle mouse events for the overlapping receivers
         }
+        
+        //TODO: Handle drag events
     }
 
     private void HandleMouse(InputReceiver receiver) // Method to handle mouse events
