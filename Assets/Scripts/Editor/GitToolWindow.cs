@@ -96,6 +96,8 @@ public class GitToolWindow : EditorWindow
 
         using Process process = Process.Start(startInfo);
         string ret = process.StandardOutput.ReadToEnd();
+        if(string.IsNullOrEmpty(ret))
+            ret = process.StandardError.ReadToEnd();
         process.WaitForExit();
         return ret;
     }
