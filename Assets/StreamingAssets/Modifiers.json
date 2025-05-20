@@ -1,0 +1,45 @@
+[
+    {
+        "id": "modifier_unit_region_patrol",
+        "name": "Unit Patrol",
+        "description": "Units are patrolling the region.",
+        "source": "unit_patrol",
+        "trigger_on": "move_to_region",
+        "trigger_off": "decay",
+        "modifiers_immediate": [{
+                "target": "region",
+                "enemyPresence": -100,
+                "decay": 720
+            },{
+                "target": "region_neighbours",
+                "enemyPresence": -25,
+                "decay": 360
+            }]
+    },{
+        "id": "modifier_unit_region_presence",
+        "name": "Units Present",
+        "description": "Units have a sustained presence in the region.",
+        "source": "unit_patrol",
+        "trigger_on": "move_to_region",
+        "trigger_off": "move_to_region",
+        "modifiers_periodic": {
+            "target": "region",
+            "delay": 30,
+            "intel": 1
+        }
+    },{
+        "id": "modifier_mission_region_medical",
+        "name": "Medical Aid Station",
+        "description": "Your medics are providing medical aid to the local populace.",
+        "source": "mission_medical",
+        "trigger_on": "mission_start",
+        "trigger_off": "mission_end",
+        "modifiers_periodic": {
+            "target": "region",
+            "delay": 15,
+            "intel": 0.5,
+            "popuar_support": 1
+        }
+
+    }
+]

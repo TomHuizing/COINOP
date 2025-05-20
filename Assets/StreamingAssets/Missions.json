@@ -1,0 +1,28 @@
+[
+    {
+        "id": "mission_patrol",
+        "name": "Patrol",
+        "description": "Patrol the region to maintain security and gather intel.",
+        "units":
+        [
+            {
+                "type": "unittype_infantry",
+                "count": 1
+            }
+        ]
+    },{
+        "id": "mission_medical",
+        "name": "Medical Aid Station",
+        "description": "Provide medical assistance to the local populace.",
+        "units":
+        [
+            {
+                "type": "unittype_infantry",
+                "count": 1
+            },{
+                "type": "unittype_medic",
+                "count": 1
+            }
+        ]
+    }
+]

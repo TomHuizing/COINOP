@@ -1,0 +1,42 @@
+[
+    {
+        "id": "unittype_infantry",
+        "name": "Infantry",
+        "description": "Basic foot soldiers, versatile and adaptable."
+    },
+    {
+        "id": "unittype_engineer",
+        "name": "Engineer",
+        "description": "Specialized troops for construction and demolition tasks."
+    },
+    {
+        "id": "unittype_medic",
+        "name": "Medic",
+        "description": "Support units that provide healing and medical assistance."
+    },
+    {
+        "id": "unittype_sniper",
+        "name": "Sniper",
+        "description": "Long-range specialists capable of taking out targets from a distance."
+    },
+    {
+        "id": "unittype_recon",
+        "name": "Recon",
+        "description": "Fast-moving units for reconnaissance and intelligence gathering."
+    },
+    {
+        "id": "unittype_support",
+        "name": "Support",
+        "description": "Units that provide logistical and tactical support to other forces."
+    },
+    {
+        "id": "unittype_armor",
+        "name": "Armor",
+        "description": "Heavily armored vehicles designed for frontline combat."
+    },
+    {
+        "id": "unittype_artillery",
+        "name": "Artillery",
+        "description": "Heavy fire support units that can bombard enemy positions from afar."
+    }
+]
