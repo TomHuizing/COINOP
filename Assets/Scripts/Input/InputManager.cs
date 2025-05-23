@@ -1,30 +1,99 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class InputManager : MonoBehaviour
 {
     private InputReceiver hoverReceiver; // The receiver that is currently being hovered over
     private Vector2 dragStart;
     private bool isDragging = false;
+    private Vector2 previousMousePosition;
+    private Vector2 currentMousePosition;
 
-    UnityEvent<Vector2,Vector2> onEndDrag; // Event triggered when the object is dragged
-    UnityEvent<Vector2,Vector2> onDrag; // Event triggered when the object is dragged
+    UnityEvent<Vector2, Vector2> onEndDrag; // Event triggered when the object is dragged
+    UnityEvent<Vector2, Vector2> onDrag; // Event triggered when the object is dragged
+
+    private Mouse mouse; // Mouse input handler
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        mouse = new Mouse(this); // Initialize the mouse input handler
+        mouse.OnHover += HandleHover; // Subscribe to the hover event
+        mouse.OnClick += HandleClick; // Subscribe to the click event
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(EventSystem.current.IsPointerOverGameObject()) // Check if the pointer is over a UI element
+        previousMousePosition = currentMousePosition; // Store the previous mouse position
+        currentMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Get the current mouse position
+        if (EventSystem.current.IsPointerOverGameObject() && !isDragging) // Check if the pointer is over a UI element
+        {
             Unhover(); // Unhover the current object
+            return;
+        }
+        HandleDrag();
+        Raycast(); // Perform a raycast to check for input receivers
+    }
+
+    private void HandleHover(Vector2 worldPosition, RaycastHit2D[] raycastHits)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void HandleClick(MouseButton button, Vector2 worldPosition, RaycastHit2D[] raycastHits)
+    {
+        throw new NotImplementedException();
+    }
+
+    private InputReceiver[] GetInputReceiver(RaycastHit2D[] hits)
+    {
+        InputReceiver[] receivers = hits
+            .Where(x => x.collider != null)
+            .Select(x => x.collider)
+            .Where(x => x.TryGetComponent<InputReceiver>(out _))
+            .Select(x => x.GetComponent<InputReceiver>())
+            .ToArray();
+        if (receivers.Length == 0 || receivers.Length == 1)
+            return receivers; // Return empty array if no receivers are found
+
+        InputLayer minLayer = receivers.Min(x => x.Layer); // Get the minimum layer of the receivers
+        return receivers
+            .Where(x => x.Layer == minLayer) // Filter the receivers to only include those with the minimum layer
+            .ToArray();
+    }
+
+    private void HandleDrag()
+    {
+        if (isDragging)
+        {
+            if (Input.GetMouseButtonUp(0)) // Check if the left mouse button was released
+            {
+                isDragging = false; // Stop dragging
+                onEndDrag?.Invoke(dragStart, (Vector2)Input.mousePosition); // Trigger the end drag event
+            }
+            else
+            {
+                onDrag?.Invoke(dragStart, (Vector2)Input.mousePosition); // Trigger the drag event
+            }
+        }
         else
-            Raycast(); // Perform a raycast to check for input receivers
+        {
+            if (Input.GetMouseButtonDown(0)) // Check if the left mouse button was pressed
+            {
+                dragStart = currentMousePosition; // Store the starting position of the drag
+            }
+
+            if (Input.GetMouseButton(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition) != (Vector3)dragStart) // Check if the left mouse button is being held down
+            {
+                isDragging = true; // Start dragging
+                onDrag?.Invoke(dragStart, Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Trigger the drag event
+            }
+        }
     }
 
     private void Raycast()
