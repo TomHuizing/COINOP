@@ -24,6 +24,9 @@ public class InputManager : MonoBehaviour
         mouse = new Mouse(this); // Initialize the mouse input handler
         mouse.OnHover += HandleHover; // Subscribe to the hover event
         mouse.OnClick += HandleClick; // Subscribe to the click event
+        mouse.OnDrag += HandleDrag; // Subscribe to the drag event
+        mouse.OnScroll += HandleScroll; // Subscribe to the scroll event
+        
     }
 
     // Update is called once per frame
@@ -42,10 +45,35 @@ public class InputManager : MonoBehaviour
 
     private void HandleHover(Vector2 worldPosition, RaycastHit2D[] raycastHits)
     {
-        throw new NotImplementedException();
+        if (raycastHits.Length == 0)
+        {
+            Unhover(); // Unhover the current object if no raycast hits are found
+            return;
+        }
+        InputReceiver[] receivers = GetInputReceiver(raycastHits); // Get the input receivers from the raycast hits
+        if (receivers.Length == 0)
+        {
+            Unhover(); // Unhover the current object if no input receivers are found
+            return;
+        }
+        if(receivers.Length == 1)
+        {
+            Hover(receivers[0]); // Hover the first input receiver if only one is found
+            return;
+        }
     }
     
     private void HandleClick(MouseButton button, Vector2 worldPosition, RaycastHit2D[] raycastHits)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void HandleScroll(float delta)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void HandleDrag(Vector2 start, Vector2 end)
     {
         throw new NotImplementedException();
     }
