@@ -1,6 +1,9 @@
-public enum MouseButton
+namespace InputSystem
 {
-    Left = 0, // Left mouse button
-    Right = 1, // Right mouse button
-    Middle = 2 // Middle mouse button (scroll wheel)
+    public enum MouseButton
+    {
+        Left = 0, // Left mouse button
+        Right = 1, // Right mouse button
+        Middle = 2 // Middle mouse button (scroll wheel)
+    }
 }

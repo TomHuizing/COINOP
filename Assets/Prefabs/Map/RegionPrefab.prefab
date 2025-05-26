@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8851f7c9896874589093583ea7dd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMultiSelectable: 0
   onSelected:
     m_PersistentCalls:
       m_Calls:
@@ -393,8 +394,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 385085749880942624}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 1
+        m_MethodName: PrimaryClick
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -409,7 +410,7 @@ MonoBehaviour:
       - m_Target: {fileID: 385085749880942624}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: ContextClick
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
