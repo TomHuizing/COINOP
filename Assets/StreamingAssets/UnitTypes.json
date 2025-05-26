@@ -2,7 +2,34 @@
     {
         "id": "unittype_infantry",
         "name": "Infantry",
-        "description": "Basic foot soldiers, versatile and adaptable."
+        "description": "Basic foot soldiers, versatile and adaptable.",
+        "icon": "unit_icon_infantry",
+        "speed": 1.5,
+        "strength": 8,
+        "buildCost":
+        {
+            "supplies": 0,
+            "intel": 0,
+            "infuence": 100
+        },
+        "staticUpkeep":
+        {
+            "supplies": 4,
+            "intel": 0,
+            "infuence": 0
+        },
+        "missionUpkeep":
+        {
+            "supplies": 8,
+            "intel": 0,
+            "infuence": 1
+        },
+        "maxInventory":
+        {
+            "supplies": 24,
+            "intel": -1,
+            "infuence": -1
+        }
     },
     {
         "id": "unittype_engineer",
@@ -12,7 +39,7 @@
     {
         "id": "unittype_medic",
         "name": "Medic",
-        "description": "Support units that provide healing and medical assistance."
+        "description": "Support units that provide medical assistance."
     },
     {
         "id": "unittype_sniper",
