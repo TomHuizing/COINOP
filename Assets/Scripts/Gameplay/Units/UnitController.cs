@@ -1,10 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using InputSystem;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    private Dictionary<string, Action<RegionController>> regionContextActions;
+
     [SerializeField] private MoveController moveController;
+    [SerializeField] private ContextMenu contextMenu;
 
     private UnitModel model;
 
@@ -21,15 +26,25 @@ public class UnitController : MonoBehaviour
     void Start()
     {
         model = new UnitModel(name);
+        regionContextActions = new()
+        {
+            { "Patrol Here", r => moveController.SetTarget(r) },
+            { "Plan Mission", r => Debug.Log($"Planning mission in region {r.name}") }
+        };
     }
 
-    public void ContextClick(Selectable selectable)
+    public void ContextClick(Selectable selectable, KeyModifiers modifiers)
     {
-        if(selectable.TryGetComponent(out RegionController regionController))
+        switch(modifiers)
         {
-            if(TryGetComponent(out MoveController moveController))
-                moveController.SetTarget(regionController);
+            case KeyModifiers.None:
+                if (selectable.TryGetComponent(out RegionController regionController))
+                    moveController.SetTarget(regionController);
+                break;
+            case KeyModifiers.Control:
+                break;
         }
+        
     }
 
 

@@ -14,7 +14,7 @@ public class SelectionBox : MonoBehaviour
 
     void Update()
     {
-        lineRenderer.startWidth = lineWidth / Camera.main.orthographicSize;
+        lineRenderer.startWidth = lineWidth * Camera.main.orthographicSize;
         lineRenderer.endWidth = lineRenderer.startWidth;
     }
 

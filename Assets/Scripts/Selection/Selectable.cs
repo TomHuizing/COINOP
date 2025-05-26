@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class Selectable : MonoBehaviour
 {
-    private static SelectionManager Manager => SelectionManager.Instance != null ? SelectionManager.Instance : throw new NullReferenceException("SelectionManager instance not found"); // Reference to the SelectionManager instance
+    private static SelectionManager Manager => SelectionManager.Instance; // Reference to the SelectionManager instance
     private static readonly List<Selectable> selectables = new(); // List of currently selected objects
     public static IEnumerable<Selectable> Selectables => selectables; // Public property to access the list of selected objects
 
@@ -21,6 +21,7 @@ public class Selectable : MonoBehaviour
     [SerializeField] private UnityEvent onHover = new(); // Event triggered when the object is hovered over
     [SerializeField] private UnityEvent onUnhover = new(); // Event triggered when the object is unhovered
     [SerializeField] private UnityEvent<GameObject> onInitSelectedUi = new(); // Event triggered when the selected UI is initialized
+    [SerializeField] private UnityEvent<GameObject> onInitMultiSelectedUi = new(); // Event triggered when the selected UI is initialized
 
     [SerializeField] private GameObject selectedUiPrefab; // UI element to show when the object is selected
     [SerializeField] private GameObject multiSelectedUiPrefab; // UI element to show when the object is selected with multiple selection
@@ -33,16 +34,28 @@ public class Selectable : MonoBehaviour
     public UnityEvent OnUnhover => onUnhover; // Public property to access the onUnhover event
 
     public UnityEvent<GameObject> OnInitSelectedUi => onInitSelectedUi; // Public property to access the onInitSelectedUi event
-    public UnityEvent<GameObject> OnInitMultiSelectedUi => onInitSelectedUi; // Public property to access the onInitSelectedUi event
+    public UnityEvent<GameObject> OnInitMultiSelectedUi => onInitMultiSelectedUi; // Public property to access the onInitSelectedUi event
 
     public bool IsMultiSelectable => isMultiSelectable; // Public property to access the isMultiSelectable flag
     public bool IsSelected => SelectionManager.Instance.Selected.Contains(this); // Check if this object is currently selected
 
     //public void Select() => Manager.Selected = this; // Set this object as the selected object
 
-    static public IEnumerable<Selectable> GetSelectablesInBox(Rect selectionBox) => selectables.Where(s => s != null && s.gameObject.activeInHierarchy && selectionBox.Contains(s.transform.position)); // Return all selectables within the given selection box
+    static public IEnumerable<Selectable> GetSelectablesInBox(Rect selectionBox)
+    {
+        return selectables.Where(s => s != null && selectionBox.Contains(s.transform.position)); // Return all selectables within the given selection box
+    }
 
-    public void OnDisable() => Manager.Deselect(this); // Deselect this object when it is disabled
+    void Start()
+    {
+        selectables.Add(this); // Add this object to the list of selectables when it starts
+    }
+
+    public void OnDisable()
+    {
+        if (IsSelected && Manager != null)
+            Manager.Deselect(this); // Deselect this object when it is disabled
+    }
 
     public void ContextClick(KeyModifiers modifiers)
     {
@@ -87,7 +100,7 @@ public class Selectable : MonoBehaviour
             return null;
 
         GameObject multiSelectedUi = Instantiate(multiSelectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the multi-selected UI prefab
-        OnInitSelectedUi?.Invoke(multiSelectedUi);
+        OnInitMultiSelectedUi?.Invoke(multiSelectedUi);
         return multiSelectedUi;
     }
 }

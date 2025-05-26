@@ -32,7 +32,7 @@ public class RegionView : MonoBehaviour
 
     public void InitSelectionUI(GameObject selectionUI) => selectionUI.GetComponent<RegionSelectionUI>().RegionController = GetComponent<RegionController>();
 
-    [ContextMenu("Generate Mesh")]
+    [UnityEngine.ContextMenu("Generate Mesh")]
     public void GenerateMesh()
     {
         var filter = GetComponent<MeshFilter>();

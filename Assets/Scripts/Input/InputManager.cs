@@ -50,17 +50,18 @@ namespace InputSystem
 
         private void HandleHover(Vector2 worldPosition, RaycastHit2D[] raycastHits)
         {
+            //print("Hover");
             InputReceiver[] receivers = GetInputReceiver(raycastHits); // Get the input receivers from the raycast hits
             if (receivers.Length == 0)
             {
                 Unhover(); // Unhover the current object if no input receivers are found
                 return;
             }
-            InputReceiver newHoverReceiver = receivers.FirstOrDefault(); // Get the receiver with the minimum layer
+            InputReceiver newHoverReceiver = receivers[0]; // Get the receiver with the minimum layer
             if (newHoverReceiver == currenHoverReceiver)
                 return; // If the new hover receiver is the same as the current one, do nothing
             Unhover(); // Unhover the current object
-            Hover(currenHoverReceiver); // Hover the new receiver
+            Hover(newHoverReceiver); // Hover the new receiver
         }
 
         private void HandleClick(MouseButton button, Vector2 worldPosition, RaycastHit2D[] raycastHits)
@@ -217,7 +218,7 @@ namespace InputSystem
         private void Hover(InputReceiver receiver) // Method to handle hover events
         {
             currenHoverReceiver = receiver; // Update the current object
-            if(currenHoverReceiver != null) // Check if the ray hit something
+            if (currenHoverReceiver != null) // Check if the ray hit something
                 currenHoverReceiver.MouseEnter(); // Send mouse enter event to the new object
         }
 

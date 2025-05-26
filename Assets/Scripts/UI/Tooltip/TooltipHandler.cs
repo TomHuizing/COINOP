@@ -11,7 +11,7 @@ public class TooltipHandler : MonoBehaviour
     {
         GameObject tooltip = Instantiate(tooltipPrefab, TooltipCanvas.Instance.transform);
         onTooltipShow?.Invoke(tooltip);
-        TooltipCanvas.Instance.Tooltip = tooltip;
+        TooltipCanvas.Instance.Tooltip = tooltip.GetComponent<RectTransform>();
     }
 
     public void HideTooltip()

@@ -31,7 +31,7 @@ public class OsmImporter : MonoBehaviour
     public Vector2 CenterLatLon => centerLatLon;
     public float MapScale => mapScale;
 
-    [ContextMenu("Import OSM")]
+    [UnityEngine.ContextMenu("Import OSM")]
     public void ImportOsm()
     {
         
