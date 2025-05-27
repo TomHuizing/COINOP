@@ -36,6 +36,8 @@ public class UnitView : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         controller = GetComponent<UnitController>();
         moveTarget = transform.position;
+        if (TryGetComponent<TooltipHandler>(out var tooltipHandler))
+            tooltipHandler.Text = name;
         // GenerateMesh();
     }
 
@@ -54,8 +56,8 @@ public class UnitView : MonoBehaviour
 
     public void InitMultiSelectionUI(GameObject multiSelectionUI)
     {
-        print("InitMultiSelectionUI called for " + gameObject.name);
-        print(multiSelectionUI == null ? "multiSelectionUI is null" : "multiSelectionUI is not null");
+        // print("InitMultiSelectionUI called for " + gameObject.name);
+        // print(multiSelectionUI == null ? "multiSelectionUI is null" : "multiSelectionUI is not null");
         multiSelectionUI.GetComponent<UnitMultiSelectionUI>().Selectable = GetComponent<Selectable>();
         multiSelectionUI.GetComponent<UnitMultiSelectionUI>().UnitController = GetComponent<UnitController>();
     }
@@ -90,14 +92,6 @@ public class UnitView : MonoBehaviour
         }
         transform.position = target;
         UpdateMoveLine();
-    }
-
-    public void TooltipShow(GameObject tooltip)
-    {
-        if (tooltip.TryGetComponent(out UnitTooltip unitTooltip))
-        {
-            unitTooltip.Controller = controller;
-        }
     }
 
     public void PathChange(IEnumerable<RegionController> newPath)

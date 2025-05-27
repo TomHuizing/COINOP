@@ -16,6 +16,10 @@ public class RegionView : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
         controller = GetComponent<RegionController>();
+        if (TryGetComponent<TooltipHandler>(out var tooltipHandler))
+        {
+            tooltipHandler.Text = name;
+        }
         // GenerateMesh();
     }
 
@@ -63,11 +67,11 @@ public class RegionView : MonoBehaviour
         lineRenderer.endWidth = 0.02f;
     }
 
-    public void TooltipShow(GameObject tooltip)
-    {
-        if (tooltip.TryGetComponent(out RegionTooltip regionTooltip))
-        {
-            regionTooltip.Controller = controller;
-        }
-    }
+    // public void TooltipShow(GameObject tooltip)
+    // {
+    //     if (tooltip.TryGetComponent(out RegionTooltip regionTooltip))
+    //     {
+    //         regionTooltip.Controller = controller;
+    //     }
+    // }
 }

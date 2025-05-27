@@ -1,4 +1,5 @@
 using System.Collections;
+using RainbowArt.CleanFlatUI;
 using UnityEngine;
 
 [RequireComponent(typeof(Canvas))]
@@ -10,8 +11,10 @@ public class TooltipCanvas : MonoBehaviour
 
     [SerializeField] private Vector2 tooltipOffset = new(10, -10);
     [SerializeField] private float tooltipDelay = 0.5f;
+    [SerializeField] private TooltipSpecial tooltipSpecial;
 
     Coroutine tooltipDelayCoroutine;
+
 
     public RectTransform Tooltip
     {
@@ -91,5 +94,14 @@ public class TooltipCanvas : MonoBehaviour
         }
 
         tooltip.position = Input.mousePosition + (Vector3)offset;
+    }
+
+    public void ShowTooltip(string text)
+    {
+        if (tooltipSpecial == null)
+            return;
+        tooltipSpecial.DescriptionValue = text;
+        tooltipSpecial.UpdatePosition(Input.mousePosition, GetComponent<RectTransform>());
+        tooltipSpecial.ShowTooltip();
     }
 }
