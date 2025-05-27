@@ -1,13 +1,7 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
-using UnityEditorInternal;
 using TMPro;
-using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 using Unity.VisualScripting;
 
 namespace RainbowArt.CleanFlatUI
@@ -18,17 +12,15 @@ namespace RainbowArt.CleanFlatUI
         SerializedProperty description;
         SerializedProperty animator;
         SerializedProperty origin;
-
+        SerializedProperty offset;
         bool showMargins = false;
-        Vector4 margins = Vector4.zero;
-        ContentSizeFitter c;
 
         protected virtual void OnEnable()
         {
             description = serializedObject.FindProperty("description");
             animator = serializedObject.FindProperty("animator");
             origin = serializedObject.FindProperty("origin");
-            c = description.objectReferenceValue.GetComponent<ContentSizeFitter>();
+            offset = serializedObject.FindProperty("offset");
         }
 
         public override void OnInspectorGUI()
@@ -37,7 +29,8 @@ namespace RainbowArt.CleanFlatUI
             EditorGUILayout.PropertyField(description);
             EditorGUILayout.PropertyField(animator);
             EditorGUILayout.PropertyField(origin);
-            serializedObject.ApplyModifiedProperties(); 
+            EditorGUILayout.PropertyField(offset);
+            serializedObject.ApplyModifiedProperties();
             if (description.objectReferenceValue != null)
             {
                 var d = description.objectReferenceValue as TextMeshProUGUI;

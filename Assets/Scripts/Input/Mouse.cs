@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,23 +29,19 @@ namespace InputSystem
         private RaycastHit2D[] raycastHits = new RaycastHit2D[0];
         private readonly Dictionary<MouseButton, Vector2> clickStart = new();
 
-        private readonly Awaitable updateAwaitable;
-
-        public Mouse()
+        public Mouse(MonoBehaviour monoBehaviour)
         {
-            // monoBehaviour.StartCoroutine(MouseUpdate());
-            updateAwaitable = MouseUpdate();
+            monoBehaviour.StartCoroutine(MouseUpdate());
         }
 
-        public async Awaitable MouseUpdate()
+        public IEnumerator MouseUpdate()
         {
             while (true)
             {
                 raycastHits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity);
                 if (IsOverUi)
                 {
-                    //yield return null; //TODO: Implement a way to end drags and clicks over the UI that started on the world
-                    await Awaitable.NextFrameAsync();
+                    yield return null; //TODO: Implement a way to end drags and clicks over the UI that started on the world
                     continue;
                 }
                 OnHover?.Invoke(WorldPosition, raycastHits);
@@ -81,8 +76,7 @@ namespace InputSystem
                 {
                     OnScroll?.Invoke(Input.mouseScrollDelta.y);
                 }
-                //yield return null;
-                await Awaitable.NextFrameAsync();
+                yield return null;
             }
         }
 

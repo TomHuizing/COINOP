@@ -23,7 +23,7 @@ namespace InputSystem
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            mouse = new Mouse(this); // Initialize the mouse input handler
+            mouse = new(this);
             mouse.OnHover += HandleHover; // Subscribe to the hover event
             mouse.OnClick += HandleClick; // Subscribe to the click event
             mouse.OnDrag += HandleDrag; // Subscribe to the drag event

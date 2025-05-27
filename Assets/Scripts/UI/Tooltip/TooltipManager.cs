@@ -11,7 +11,7 @@ public class TooltipManager : MonoBehaviour
     [SerializeField] RectTransform canvas;
     [SerializeField] TooltipSpecial tooltip;
 
-    private readonly Mouse mouse = new();
+    private Mouse mouse;
     private Coroutine delayCoroutine;
 
     void Awake()
@@ -20,6 +20,17 @@ public class TooltipManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        mouse = new(this);
+    }
+
+    void Update()
+    {
+        if (tooltip.enabled)
+            tooltip.UpdatePosition(mouse.ScreenPosition, canvas);
     }
 
     public void ShowTooltip(string message)
