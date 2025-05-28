@@ -5,7 +5,6 @@ public class UnitSelectionUi : MonoBehaviour
 {
     private UnitController unitController;
 
-    [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI targetText;
     [SerializeField] private TextMeshProUGUI strengthText;
     [SerializeField] private TextMeshProUGUI suppliesText;
@@ -16,7 +15,6 @@ public class UnitSelectionUi : MonoBehaviour
         set
         {
             unitController = value;
-            nameText.text = unitController.Name;
             targetText.text = unitController.TargetRegion != null ? unitController.NextRegion.Name + " | " + unitController.TargetRegion.Name : "";
             strengthText.text = unitController.Strength.ToString("0%");
             suppliesText.text = unitController.Supplies.ToString("0%");

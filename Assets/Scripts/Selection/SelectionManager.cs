@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class SelectionManager : MonoBehaviour
 
     [SerializeField] private RectTransform selectionUiParent; // Parent transform for the selection UI
     [SerializeField] private SelectionBox selectionBox; // Reference to the SelectionBox component for visualizing selection area
+    [SerializeField] private UnityEvent<Selectable[]> OnSelectionChange;
 
     private readonly List<GameObject> selectionUi = new();
 
@@ -50,7 +50,8 @@ public class SelectionManager : MonoBehaviour
                                         //     Destroy(selectionUi); // Destroy the previous selection UI if it exists
                                         // selectionUi = selectable.GetSelectedUi(); // Instantiate the new selection UI
                                         // selectionUi.transform.SetParent(selectionUiParent, false); // Set the parent of the selection UI
-        UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+                                        // UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        OnSelectionChange?.Invoke(selected.ToArray());
     }
 
     public void SelectRange(IEnumerable<Selectable> selectables)
@@ -70,7 +71,8 @@ public class SelectionManager : MonoBehaviour
             selectable.OnMultiSelect.Invoke(); // Invoke the select event for each selectable
             selected.Add(selectable); // Add the selectable to the selected list
         }
-        UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        // UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        OnSelectionChange?.Invoke(selected.ToArray());
     }
 
     public void Add(Selectable selectable)
@@ -80,7 +82,8 @@ public class SelectionManager : MonoBehaviour
 
         selectable.OnMultiSelect.Invoke(); // Invoke the select event for the newly selected object
         selected.Add(selectable); // Add the new selectable to the selected list
-        UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+                                  // UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        OnSelectionChange?.Invoke(selected.ToArray());
     }
 
     public void AddRange(IEnumerable<Selectable> selectables)
@@ -98,7 +101,8 @@ public class SelectionManager : MonoBehaviour
             selectable.OnMultiSelect.Invoke(); // Invoke the multi-select event for each selectable
             selected.Add(selectable); // Add the selectable to the selected list
         }
-        UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        // UpdateSelectionUI(); // Update the selection UI to reflect the new selection
+        OnSelectionChange?.Invoke(selected.ToArray());
     }
 
     public void Deselect(Selectable selectable)
@@ -117,7 +121,8 @@ public class SelectionManager : MonoBehaviour
             s.OnDeselected.Invoke(); // Invoke the deselect event for all currently selected objects
         }
         selected.Clear(); // Deselect the currently selected object
-        UpdateSelectionUI(); // Update the selection UI to reflect the deselection
+        // UpdateSelectionUI(); // Update the selection UI to reflect the deselection
+        OnSelectionChange?.Invoke(selected.ToArray());
     }
 
     public void Drag(Vector2 start, Vector2 end)
@@ -139,30 +144,30 @@ public class SelectionManager : MonoBehaviour
         SelectRange(s); // Select the objects within the rectangle
     }
 
-    public void UpdateSelectionUI()
-    {
-        foreach (var s in selectionUi)
-        {
-            if (s != null)
-                Destroy(s);
-        }
-        selectionUi.Clear(); // Clear the previous selection UI
-        if (selected.Count == 0)
-            return; // If no objects are selected, do nothing
-        if (selected.Count == 1)
-            selectionUi.Add(selected.First().GetSelectedUi()); // Get the UI for the single selected object
-        else
-            selectionUi.AddRange(selected.Select(s => s.GetMultiSelectedUi())); // Get the UI for multiple selected objects
-        int offset = 0;
-        foreach (var ui in selectionUi)
-        {
-            if (ui != null)
-            {
-                ui.transform.SetParent(selectionUiParent, false); // Set the parent of the selection UI
-                ui.transform.localPosition = new Vector3(offset, 0, 0); // Position the UI vertically
-                ui.SetActive(true); // Activate the selection UI
-                offset += 25;
-            }
-        }
-    }
+    // public void UpdateSelectionUI()
+    // {
+    //     foreach (var s in selectionUi)
+    //     {
+    //         if (s != null)
+    //             Destroy(s);
+    //     }
+    //     selectionUi.Clear(); // Clear the previous selection UI
+    //     if (selected.Count == 0)
+    //         return; // If no objects are selected, do nothing
+    //     if (selected.Count == 1)
+    //         selectionUi.Add(selected.First().GetSelectedUi()); // Get the UI for the single selected object
+    //     else
+    //         selectionUi.AddRange(selected.Select(s => s.GetMultiSelectedUi())); // Get the UI for multiple selected objects
+    //     int offset = 0;
+    //     foreach (var ui in selectionUi)
+    //     {
+    //         if (ui != null)
+    //         {
+    //             ui.transform.SetParent(selectionUiParent, false); // Set the parent of the selection UI
+    //             ui.transform.localPosition = new Vector3(offset, 0, 0); // Position the UI vertically
+    //             ui.SetActive(true); // Activate the selection UI
+    //             offset += 25;
+    //         }
+    //     }
+    // }
 }

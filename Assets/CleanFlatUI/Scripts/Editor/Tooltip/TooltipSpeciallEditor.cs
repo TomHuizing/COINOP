@@ -11,6 +11,7 @@ namespace RainbowArt.CleanFlatUI
     {
         SerializedProperty description;
         SerializedProperty animator;
+        SerializedProperty rectTransform;
         SerializedProperty origin;
         SerializedProperty offset;
         bool showMargins = false;
@@ -19,6 +20,7 @@ namespace RainbowArt.CleanFlatUI
         {
             description = serializedObject.FindProperty("description");
             animator = serializedObject.FindProperty("animator");
+            rectTransform = serializedObject.FindProperty("rectTransform");
             origin = serializedObject.FindProperty("origin");
             offset = serializedObject.FindProperty("offset");
         }
@@ -28,6 +30,7 @@ namespace RainbowArt.CleanFlatUI
             serializedObject.Update();
             EditorGUILayout.PropertyField(description);
             EditorGUILayout.PropertyField(animator);
+            EditorGUILayout.PropertyField(rectTransform);
             EditorGUILayout.PropertyField(origin);
             EditorGUILayout.PropertyField(offset);
             serializedObject.ApplyModifiedProperties();

@@ -29,7 +29,7 @@ public class TooltipManager : MonoBehaviour
 
     void Update()
     {
-        if (tooltip.enabled)
+        if (tooltip.gameObject.activeSelf)
             tooltip.UpdatePosition(mouse.ScreenPosition, canvas);
     }
 

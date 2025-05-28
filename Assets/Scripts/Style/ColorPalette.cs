@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ColorPalette", menuName = "Scriptable Objects/ColorPalette")]
@@ -6,12 +5,19 @@ public class ColorPalette : ScriptableObject
 {
     // public List<PaletteColor> colors;
 
-    [Header("Text Colors")]
-    [SerializeField] Color textColor;
-    [SerializeField] Color highlightColor;
-    [SerializeField] Color subduedColor;
-    [SerializeField] Color warningColor;
-    [SerializeField] Color dangerColor;
+    [Header("Text Colors Dark")]
+    [SerializeField] Color textColorDark;
+    [SerializeField] Color highlightColorDark;
+    [SerializeField] Color subduedColorDark;
+    [SerializeField] Color warningColorDark;
+    [SerializeField] Color dangerColorDark;
+
+    [Header("Text Colors Dark")]
+    [SerializeField] Color textColorLight;
+    [SerializeField] Color highlightColorLight;
+    [SerializeField] Color subduedColorLight;
+    [SerializeField] Color warningColorLight;
+    [SerializeField] Color dangerColorLight;
 
     [Header("Panel Colors")]
     [SerializeField] Color backgroundColor;
@@ -40,11 +46,16 @@ public class ColorPalette : ScriptableObject
     [SerializeField] Color minorRoad;
     [SerializeField] Color mapBackground;
 
-    public Color TextColor => textColor;
-    public Color HighlightColor => highlightColor;
-    public Color SubduedColor => subduedColor;
-    public Color WarningColor => warningColor;
-    public Color DangerColor => dangerColor;
+    public Color TextColorDark => textColorDark;
+    public Color HighlightColorDark => highlightColorDark;
+    public Color SubduedColorDark => subduedColorDark;
+    public Color WarningColorDark => warningColorDark;
+    public Color DangerColorDark => dangerColorDark;
+    public Color TextColorLight => textColorLight;
+    public Color HighlightColorLight => highlightColorLight;
+    public Color SubduedColorLight => subduedColorLight;
+    public Color WarningColorLight => warningColorLight;
+    public Color DangerColorLight => dangerColorLight;
     public Color BackgroundColor => backgroundColor;
     public Color BackgroundAltColor => backgroundAltColor;
     public Color BorderColor => borderColor;
@@ -61,11 +72,16 @@ public class ColorPalette : ScriptableObject
     {
         return color switch
         {
-            PaletteColor.TextColor => textColor,
-            PaletteColor.HighlightColor => highlightColor,
-            PaletteColor.SubduedColor => subduedColor,
-            PaletteColor.WarningColor => warningColor,
-            PaletteColor.DangerColor => dangerColor,
+            PaletteColor.TextColorDark => textColorDark,
+            PaletteColor.HighlightColorDark => highlightColorDark,
+            PaletteColor.SubduedColorDark => subduedColorDark,
+            PaletteColor.WarningColorDark => warningColorDark,
+            PaletteColor.DangerColorDark => dangerColorDark,
+            PaletteColor.TextColorLight => textColorLight,
+            PaletteColor.HighlightColorLight => highlightColorLight,
+            PaletteColor.SubduedColorLight => subduedColorLight,
+            PaletteColor.WarningColorLight => warningColorLight,
+            PaletteColor.DangerColorLight => dangerColorLight,
             PaletteColor.BackgroundColor => backgroundColor,
             PaletteColor.BackgroundAltColor => backgroundAltColor,
             PaletteColor.BorderColor => borderColor,

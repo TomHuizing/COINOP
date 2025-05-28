@@ -17,7 +17,7 @@ namespace RainbowArt.CleanFlatUI
         void Start()
         {
             contextMenu.gameObject.SetActive(false);  
-            contextMenu.OnValueChanged.AddListener(ContextMenuValueChanged);    
+            // contextMenu.OnValueChanged.AddListener(ContextMenuValueChanged);    
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -34,7 +34,7 @@ namespace RainbowArt.CleanFlatUI
                 RectTransform contextMenuParentRect = contextMenuRect.parent as RectTransform;
                 if(RectTransformUtility.ScreenPointToLocalPointInRectangle(contextMenuParentRect, mousePosition, eventData.enterEventCamera, out mousePos))
                 {
-                    contextMenu.Show(mousePos, areaScope); 
+                    // contextMenu.Show(mousePos, areaScope); //TOMHUIZING EDITED AWAY FOR COMPATIBILITY
                 }                                     
             }        
         }

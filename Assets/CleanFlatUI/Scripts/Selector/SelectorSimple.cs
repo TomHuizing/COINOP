@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
- 
+using System;
+
 /*
 //Set properties in C# example codes.
 using RainbowArt.CleanFlatUI;
@@ -41,255 +39,315 @@ namespace RainbowArt.CleanFlatUI
 {
     public class SelectorSimple : MonoBehaviour 
     {
-        [SerializeField]
-        public Button buttonPrevious;
-
-        [SerializeField]
-        Button buttonNext;
-
-        [SerializeField]
-        Image imageCurrent;
-
-        [SerializeField]
-        TextMeshProUGUI textCurrent;
-
-        [SerializeField]
-        bool loop = false;
-
-        [SerializeField]
-        bool hasIndicator = false;
-
-        [SerializeField]
-        TextMeshProUGUI indicator;
-
-        [SerializeField]
-        RectTransform indicatorRect;        
-
-        [SerializeField]
-        int startIndex = 0;
+        [SerializeField] private Button buttonPrevious;
+        [SerializeField] private Button buttonNext;
+        // [SerializeField] private Image imageCurrent;
+        [SerializeField] private TextMeshProUGUI textCurrent;
+        [SerializeField] private bool loop = true;
+        [SerializeField] private List<string> options;
+        [SerializeField] private UnityEvent<int> onValueChanged = new();
+        // [SerializeField] bool hasIndicator = false;
+        // [SerializeField] private TextMeshProUGUI indicator;
+        // [SerializeField] RectTransform indicatorRect;        
+        // [SerializeField] private int startIndex = 0;
         
-        [Serializable]
-        public class OptionItem
+        // [Serializable]
+        // public class OptionItem
+        // {
+        //     public string optionText = "option"; 
+        //     public Sprite optionImage;    
+
+        //     public OptionItem()
+        //     {
+        //     }
+
+        //     public OptionItem(string newText)
+        //     {
+        //         optionText = newText;
+        //     }
+
+        //     public OptionItem(Sprite newImage)
+        //     {
+        //         optionImage = newImage;
+        //     }
+        //     public OptionItem(string newText, Sprite newImage)
+        //     {
+        //         optionText = newText;
+        //         optionImage = newImage;
+        //     }                   
+        // }
+
+
+        // [Serializable]
+        // public class SelectorSimpleEvent : UnityEvent<int>{ }
+
+
+        // bool changed = true;
+        // int newIndex = 0;
+        private int index = 0;          
+
+        public int Index
         {
-            public string optionText = "option"; 
-            public Sprite optionImage;    
-
-            public OptionItem()
-            {
-            }
-
-            public OptionItem(string newText)
-            {
-                optionText = newText;
-            }
-
-            public OptionItem(Sprite newImage)
-            {
-                optionImage = newImage;
-            }
-            public OptionItem(string newText, Sprite newImage)
-            {
-                optionText = newText;
-                optionImage = newImage;
-            }                   
-        }
-
-        public List<OptionItem> options = new List<OptionItem>();
-
-        [Serializable]
-        public class SelectorSimpleEvent : UnityEvent<int>{ }
-
-        [SerializeField]
-        SelectorSimpleEvent onValueChanged = new SelectorSimpleEvent();
-
-        bool changed = true;
-        int newIndex = 0;
-        int currentIndex = 0;          
-
-        public int CurrentIndex
-        {
-            get => currentIndex;
+            get => index;
             set
             {
-                SetCurrentOptions(value);
-                onValueChanged.Invoke(currentIndex);
-            }
-        }
-
-        public int StartIndex
-        {
-            get => startIndex;
-            set
-            {
-                startIndex = value;
-                SetCurrentOptions(value);
-            }
-        }
-
-        public bool HasIndicator
-        {
-            get => hasIndicator;
-            set
-            {
-                hasIndicator = value;
-                if (indicator != null && indicator.gameObject.activeSelf != hasIndicator)
+                if (options.Count == 0)
                 {
-                    indicator.gameObject.SetActive(hasIndicator);
+                    index = -1;
+                    ApplyIndex();
+                    OnValueChanged?.Invoke(index);
+                    return;
                 }
+                index = value;
+                if (index > options.Count - 1)
+                {
+                    if (loop)
+                        index = 0;
+                    else
+                        index = options.Count - 1;
+                }
+                if (index < 0)
+                {
+                    if (loop)
+                        index = options.Count - 1;
+                    else
+                        index = 0;
+                }
+                ApplyIndex();
+                OnValueChanged?.Invoke(index);
             }
         }
 
-        public SelectorSimpleEvent OnValueChanged
-        {
-            get => onValueChanged;
-            set
-            {
-                onValueChanged = value;
-            }
-        } 
+        public int Count => options.Count;
+
+        public event Action<int> OnValueChanged;
+
+        // public int StartIndex
+        // {
+        //     get => startIndex;
+        //     set
+        //     {
+        //         startIndex = value;
+        //         SetCurrentOptions(value);
+        //     }
+        // }
+
+        // public bool HasIndicator
+        // {
+        //     get => hasIndicator;
+        //     set
+        //     {
+        //         hasIndicator = value;
+        //         if (indicator != null && indicator.gameObject.activeSelf != hasIndicator)
+        //         {
+        //             indicator.gameObject.SetActive(hasIndicator);
+        //         }
+        //     }
+        // }
+
+        // public SelectorSimpleEvent OnValueChanged
+        // {
+        //     get => onValueChanged;
+        //     set
+        //     {
+        //         onValueChanged = value;
+        //     }
+        // } 
 
         void Start()
         {
-            if(buttonPrevious != null)
-            {
-                buttonPrevious.onClick.AddListener(OnButtonClickPrevious); 
-            } 
-            if(buttonNext != null)
-            {
-                buttonNext.onClick.AddListener(OnButtonClickNext); 
-            }
-            CurrentIndex = startIndex;
+            OnValueChanged += onValueChanged.Invoke;
+            if (buttonPrevious != null)
+                buttonPrevious.onClick.AddListener(OnButtonClickPrevious);
+            if (buttonNext != null)
+                buttonNext.onClick.AddListener(OnButtonClickNext);
+            UpdateSelector();
+            Index = 0;
         }
 
         public void OnButtonClickPrevious()
         {
-            UpdateOptions(false);            
-            if(changed)
+            // UpdateOptions(false);
+            // if (changed)
+            // {
+            //     onValueChanged.Invoke(CurrentIndex);
+            // }
+
+            if (Index == 0)
             {
-                onValueChanged.Invoke(CurrentIndex);
-            }                    
+                if (loop)
+                    Index = options.Count - 1;
+                return;
+            }
+            Index--;
+            
         }
-        
+
         public void OnButtonClickNext()
         {
-            UpdateOptions(true);                    
-            if(changed)
+            // UpdateOptions(true);                    
+            // if(changed)
+            // {
+            //     onValueChanged.Invoke(CurrentIndex);
+            // }    
+            if (Index == options.Count - 1)
             {
-                onValueChanged.Invoke(CurrentIndex);
-            }                 
+                if (loop)
+                    Index = 0;
+                return;
+            }
+            Index++;             
         }
 
-        public void AddOptions(List<OptionItem> optionList)
-        {
-            options.AddRange(optionList);
-        }
-
-        public void AddOptions(List<string> optionList)
-        {
-            for (int i = 0; i < optionList.Count; i++)
-            {
-                options.Add(new OptionItem(optionList[i]));
-            }                
-        }
-
-        public void AddOptions(List<Sprite> optionList)
-        {
-            for (int i = 0; i < optionList.Count; i++)
-            {
-                options.Add(new OptionItem(optionList[i]));
-            }                
-        }
-
-        public void ClearOptions()
+        public void SetOptions(IEnumerable<string> newOptions)
         {
             options.Clear();
+            options.AddRange(newOptions);
+            UpdateSelector();
+            Index = 0;
         }
 
-        void SetCurrentOptions(int newCurrentIndex)
-        {
-            currentIndex = newCurrentIndex;            
-            SetOptions();
-            if (hasIndicator && (indicator != null))
-            {
-                indicator.text = (currentIndex + 1) + " / " + options.Count;
-            }
-        }      
+        // public void AddOptions(List<OptionItem> optionList)
+        // {
+        //     options.AddRange(optionList);
+        //     UpdateSelector();
+        // }
 
-        void SetOptions()
-        {
-            textCurrent.text = options[currentIndex].optionText;
-            if(imageCurrent != null)
-            {
-                if(options[currentIndex].optionImage != null)
-                {
-                    imageCurrent.gameObject.SetActive(true);
-                    imageCurrent.sprite = options[currentIndex].optionImage;
-                }
-                else
-                {
-                    imageCurrent.gameObject.SetActive(false);
-                    imageCurrent.sprite = null;
-                }                       
-            }    
-        }  
+        // public void AddOptions(List<string> optionList)
+        // {
+        //     // for (int i = 0; i < optionList.Count; i++)
+        //     // {
+        //     //     options.Add(new OptionItem(optionList[i]));
+        //     // }
+        //     options.AddRange(optionList.Select(o => new OptionItem(o)));     
+        //     UpdateSelector();        
+        // }
 
-        void UpdateOptions(bool bNext)
+        // public void AddOptions(List<Sprite> optionList)
+        // {
+        //     // for (int i = 0; i < optionList.Count; i++)
+        //     // {
+        //     //     options.Add(new OptionItem(optionList[i]));
+        //     // }  
+        //     options.AddRange(optionList.Select(o => new OptionItem(o)));
+        //     UpdateSelector();             
+        // }
+
+        // public void ClearOptions()
+        // {
+        //     options.Clear();
+        //     UpdateSelector();
+        // }
+
+        // void SetCurrentOptions(int newCurrentIndex)
+        // {
+        //     currentIndex = newCurrentIndex;            
+        //     SetOptions();
+        //     if (hasIndicator && (indicator != null))
+        //     {
+        //         indicator.text = (currentIndex + 1) + " / " + options.Count;
+        //     }
+        // }
+        void UpdateSelector()
         {
-            changed = true;
-            if( bNext )
+            if (options.Count > 1)
             {
-                if(currentIndex == options.Count - 1)
-                {
-                    if(loop)
-                    {
-                        newIndex = 0;
-                    }
-                    else
-                    {
-                        changed = false;
-                    }                    
-                }
-                else
-                {                  
-                    newIndex = currentIndex + 1;                    
-                }             
+                buttonNext.gameObject.SetActive(true);
+                buttonPrevious.gameObject.SetActive(true);
             }
             else
             {
-                if(currentIndex == 0)
-                {
-                    if(loop)
-                    {
-                        newIndex = options.Count -1;
-                    }
-                    else
-                    {
-                        changed = false;
-                    }                    
-                }
-                else
-                {                 
-                    newIndex = currentIndex - 1;                    
-                }                 
-            } 
-            if(changed)
-            {     
-                currentIndex = newIndex;               
-                SetOptions();           
-                if(hasIndicator &&(indicator != null))
-                {
-                    indicator.text = (newIndex+1) +" / "+ options.Count;
-                }                
-            }          
+                buttonNext.gameObject.SetActive(false);
+                buttonPrevious.gameObject.SetActive(false);
+            }
+            if (options.Count == 0)
+                textCurrent.text = string.Empty;
         }
-        #if UNITY_EDITOR
-        protected void OnValidate()
+
+        void ApplyIndex()
         {
-            if(indicatorRect != null)
-            {
-                indicatorRect.gameObject.SetActive(hasIndicator);
-            } 
-        }
-        #endif
+            if (Index == -1)
+                textCurrent.text = string.Empty;
+            else
+                textCurrent.text = options[Index];
+            // textCurrent.text = options[currentIndex].optionText;
+            // if (imageCurrent != null)
+            // {
+            //     if (options[currentIndex].optionImage != null)
+            //     {
+            //         imageCurrent.gameObject.SetActive(true);
+            //         imageCurrent.sprite = options[currentIndex].optionImage;
+            //     }
+            //     else
+            //     {
+            //         imageCurrent.gameObject.SetActive(false);
+            //         imageCurrent.sprite = null;
+            //     }
+            // }
+            // if (hasIndicator && (indicator != null))
+            // {
+            //     indicator.text = (currentIndex + 1) + " / " + options.Count;
+            // }
+        }  
+
+        // void UpdateOptions(bool bNext)
+        // {
+        //     changed = true;
+        //     if( bNext )
+        //     {
+        //         if(currentIndex == options.Count - 1)
+        //         {
+        //             if(loop)
+        //             {
+        //                 newIndex = 0;
+        //             }
+        //             else
+        //             {
+        //                 changed = false;
+        //             }                    
+        //         }
+        //         else
+        //         {                  
+        //             newIndex = currentIndex + 1;                    
+        //         }             
+        //     }
+        //     else
+        //     {
+        //         if(currentIndex == 0)
+        //         {
+        //             if(loop)
+        //             {
+        //                 newIndex = options.Count -1;
+        //             }
+        //             else
+        //             {
+        //                 changed = false;
+        //             }                    
+        //         }
+        //         else
+        //         {                 
+        //             newIndex = currentIndex - 1;                    
+        //         }                 
+        //     } 
+        //     if(changed)
+        //     {     
+        //         currentIndex = newIndex;               
+        //         SetOptions();           
+        //         if(hasIndicator &&(indicator != null))
+        //         {
+        //             indicator.text = (newIndex+1) +" / "+ options.Count;
+        //         }                
+        //     }          
+        // }
+        
+        // #if UNITY_EDITOR
+        // protected void OnValidate()
+        // {
+        //     if (indicatorRect != null)
+        //     {
+        //         indicatorRect.gameObject.SetActive(hasIndicator);
+        //     }
+        // }
+        // #endif
     }
 }

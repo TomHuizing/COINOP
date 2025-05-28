@@ -33,18 +33,20 @@ public class UnitController : MonoBehaviour
         };
     }
 
-    public void ContextClick(Selectable selectable, KeyModifiers modifiers)
+    public void ContextClick(Selectable selectable)
     {
-        switch(modifiers)
+        if (selectable.TryGetComponent(out RegionController regionController))
+            moveController.SetTarget(regionController);
+    }
+
+    public void ShowMenu(Selectable selectable)
+    {
+        if (!selectable.TryGetComponent(out RegionController regionController))
+            return;
+        ContextMenuManager.Instance.ShowContextMenu(new()
         {
-            case KeyModifiers.None:
-                if (selectable.TryGetComponent(out RegionController regionController))
-                    moveController.SetTarget(regionController);
-                break;
-            case KeyModifiers.Control:
-                break;
-        }
-        
+            {"Move Here", () => moveController.SetTarget(regionController)}
+        });
     }
 
 

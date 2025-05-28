@@ -7,7 +7,7 @@ using UnityEditorInternal;
 
 namespace RainbowArt.CleanFlatUI
 {
-    [CustomEditor(typeof(ContextMenu))]
+    // [CustomEditor(typeof(ContextMenu))]
     public class ContextMenuEditor : Editor
     {
         SerializedProperty itemTemplate;

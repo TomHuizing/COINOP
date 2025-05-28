@@ -24,10 +24,10 @@ namespace RainbowArt.CleanFlatUI
 
         [SerializeField] TextMeshProUGUI description;
         [SerializeField] Animator animator; 
+        [SerializeField] RectTransform rectTransform;
         [SerializeField] Anchor origin = Anchor.BottomLeft;
         [SerializeField] Vector2 offset = new(10, 10);
 
-        private RectTransform rectTransform;
          
         public string DescriptionValue
         {
@@ -55,10 +55,12 @@ namespace RainbowArt.CleanFlatUI
         //     UpdatePosition(mousePosition,areaScope);
         // }
 
-        void Start()
-        {
-            rectTransform = GetComponent<RectTransform>();
-        }
+        // void OnEnable()
+        // {
+        //     rectTransform = GetComponent<RectTransform>();
+        //     if (rectTransform == null)
+        //         throw new ArgumentNullException("rectTransform");
+        // }
 
         public void ShowTooltip()
         {
@@ -69,7 +71,7 @@ namespace RainbowArt.CleanFlatUI
                 animator.gameObject.transform.localScale = Vector3.one;
                 animator.gameObject.transform.localEulerAngles = Vector3.zero;
             }
-            PlayAnimation();
+            // PlayAnimation();
         }
 
         public void HideTooltip()
@@ -221,16 +223,16 @@ namespace RainbowArt.CleanFlatUI
         //     selfRect.localPosition = pos;
         // }
 
-        void PlayAnimation()
-        {
-            if(animator != null)
-            {
-                if(animator.enabled == false)
-                {
-                    animator.enabled = true;
-                }
-                animator.Play("Transition",0,0);  
-            }            
-        }
+        // void PlayAnimation()
+        // {
+        //     if(animator != null)
+        //     {
+        //         if(animator.enabled == false)
+        //         {
+        //             animator.enabled = true;
+        //         }
+        //         animator.Play("Transition",0,0);  
+        //     }            
+        // }
     }
 }

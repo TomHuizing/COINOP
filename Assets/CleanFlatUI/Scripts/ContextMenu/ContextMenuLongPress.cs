@@ -22,7 +22,7 @@ namespace RainbowArt.CleanFlatUI
         void Start()
         {
             contextMenu.gameObject.SetActive(false); 
-            contextMenu.OnValueChanged.AddListener(ContextMenuValueChanged); 
+            // contextMenu.OnValueChanged.AddListener(ContextMenuValueChanged); 
         }   
 
         void Update()
@@ -67,7 +67,7 @@ namespace RainbowArt.CleanFlatUI
             RectTransform contextMenuRect = contextMenu.gameObject.GetComponent<RectTransform>();
             RectTransform contextMenuParentRect = contextMenuRect.parent as RectTransform;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(contextMenuParentRect, mousePosition, cachedEnterEventCamera, out mousePos);
-            contextMenu.Show(mousePos, areaScope);                             
+            // contextMenu.Show(mousePos, areaScope); TOMHUIZING EDITED AWAY FOR COMPATIBILITY
         }
         
         public void OnPointerDown(PointerEventData eventData)

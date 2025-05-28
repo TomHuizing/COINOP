@@ -18,6 +18,8 @@ public class Selectable : MonoBehaviour
     [SerializeField] private UnityEvent onMultiSelect = new(); // Event triggered when the object is selected with multiple selection
     [SerializeField] private UnityEvent onDeselected = new(); // Event triggered when the object is deselected
     [SerializeField] private UnityEvent<Selectable> onContext = new();
+    [SerializeField] private UnityEvent<Selectable> onAddContext = new();
+    [SerializeField] private UnityEvent<Selectable> onMenu = new();
     [SerializeField] private UnityEvent onHover = new(); // Event triggered when the object is hovered over
     [SerializeField] private UnityEvent onUnhover = new(); // Event triggered when the object is unhovered
     [SerializeField] private UnityEvent<GameObject> onInitSelectedUi = new(); // Event triggered when the selected UI is initialized
@@ -30,6 +32,8 @@ public class Selectable : MonoBehaviour
     public UnityEvent OnMultiSelect => onMultiSelect; // Public property to access the onMultiSelect event
     public UnityEvent OnDeselected => onDeselected; // Public property to access the onDeselected event
     public UnityEvent<Selectable> OnContext => onContext; // Public property to access the onContext event
+    public UnityEvent<Selectable> OnAddContext => onAddContext; // Public property to access the onContext event
+    public UnityEvent<Selectable> OnMenu => onMenu; // Public property to access the onContext event
     public UnityEvent OnHover => onHover; // Public property to access the onHover event
     public UnityEvent OnUnhover => onUnhover; // Public property to access the onUnhover event
 
@@ -59,11 +63,21 @@ public class Selectable : MonoBehaviour
 
     public void ContextClick(KeyModifiers modifiers)
     {
-        foreach (Selectable selectable in Manager.Selected)
+        foreach (Selectable selectable in Manager.Selected.Where(s => s != null && s.gameObject.activeInHierarchy))
         {
-            if (selectable == null || !selectable.gameObject.activeInHierarchy)
-                continue; // Skip if the selectable is null or inactive
-            selectable.OnContext.Invoke(this); // Invoke the context event for each selected object
+            switch (modifiers)
+            {
+                case KeyModifiers.None:
+                    selectable.OnContext.Invoke(this);
+                    break;
+                case KeyModifiers.Shift:
+                    selectable.OnAddContext.Invoke(this);
+                    break;
+                case KeyModifiers.Control:
+                    selectable.OnMenu.Invoke(this);
+                    break;
+                
+            }
         }
     }
 

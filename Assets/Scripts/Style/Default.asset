@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dde66f5fd2e6e4491ea748a19d0ba2, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
-  textColor: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
-  highlightColor: {r: 0, g: 0, b: 0, a: 1}
-  subduedColor: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 0.5019608}
-  warningColor: {r: 0, g: 0, b: 0, a: 0}
-  dangerColor: {r: 0.54509807, g: 0.227451, b: 0.227451, a: 1}
+  textColorDark: {r: 0.18039216, g: 0.18039216, b: 0.18039216, a: 1}
+  highlightColorDark: {r: 0, g: 0, b: 0, a: 1}
+  subduedColorDark: {r: 0.18039216, g: 0.18039216, b: 0.18039216, a: 0.5019608}
+  warningColorDark: {r: 0, g: 0, b: 0, a: 0}
+  dangerColorDark: {r: 0, g: 0, b: 0, a: 0}
+  textColorLight: {r: 0.81960785, g: 0.81960785, b: 0.81960785, a: 1}
+  highlightColorLight: {r: 1, g: 1, b: 1, a: 1}
+  subduedColorLight: {r: 0.81960785, g: 0.81960785, b: 0.81960785, a: 0.5019608}
+  warningColorLight: {r: 0, g: 0, b: 0, a: 0}
+  dangerColorLight: {r: 0, g: 0, b: 0, a: 0}
   backgroundColor: {r: 0.84313726, g: 0.79607844, b: 0.6901961, a: 1}
   backgroundAltColor: {r: 0.6431373, g: 0.63529414, b: 0.47843137, a: 1}
   borderColor: {r: 0.35686275, g: 0.29411766, b: 0.22745098, a: 1}

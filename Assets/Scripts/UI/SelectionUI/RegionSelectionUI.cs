@@ -7,7 +7,6 @@ public class RegionSelectionUI : MonoBehaviour
 {
     private RegionController regionController;
     
-    [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI controlText;
     [SerializeField] private TextMeshProUGUI supportText; 
     [SerializeField] private TextMeshProUGUI infraText;
@@ -18,7 +17,6 @@ public class RegionSelectionUI : MonoBehaviour
         set
         {
             regionController = value;
-            nameText.text = regionController.Name;
             controlText.text = regionController.Control.ToString("0%");
             supportText.text = regionController.Support.ToString("0%");
             infraText.text = regionController.Infra.ToString("0");

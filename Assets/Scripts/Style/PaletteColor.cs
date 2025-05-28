@@ -3,11 +3,16 @@ using UnityEngine;
 
 public enum PaletteColor
 {
-    TextColor,
-    HighlightColor,
-    SubduedColor,
-    WarningColor,
-    DangerColor,
+    TextColorDark,
+    HighlightColorDark,
+    SubduedColorDark,
+    WarningColorDark,
+    DangerColorDark,
+    TextColorLight,
+    HighlightColorLight,
+    SubduedColorLight,
+    WarningColorLight,
+    DangerColorLight,
     BackgroundColor,
     BackgroundAltColor,
     BorderColor,
