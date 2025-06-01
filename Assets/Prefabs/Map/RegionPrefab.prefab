@@ -289,7 +289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8851f7c9896874589093583ea7dd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionManager: {fileID: 11400000, guid: 05ae72c7ca11b7f4abd1b443a38fbecf, type: 2}
   isMultiSelectable: 0
+  layer: 0
   onSelected:
     m_PersistentCalls:
       m_Calls:
@@ -305,9 +307,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  onMultiSelect:
-    m_PersistentCalls:
-      m_Calls: []
   onDeselected:
     m_PersistentCalls:
       m_Calls:
@@ -324,6 +323,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   onContext:
+    m_PersistentCalls:
+      m_Calls: []
+  onAddContext:
+    m_PersistentCalls:
+      m_Calls: []
+  onMenu:
     m_PersistentCalls:
       m_Calls: []
   onHover:
@@ -371,8 +376,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onInitMultiSelectedUi:
+    m_PersistentCalls:
+      m_Calls: []
   selectedUiPrefab: {fileID: 1808082949010307935, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}
-  multiSelectedUiPrefab: {fileID: 0}
 --- !u!114 &4781767157057349466
 MonoBehaviour:
   m_ObjectHideFlags: 0

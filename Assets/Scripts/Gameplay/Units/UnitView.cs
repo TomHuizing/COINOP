@@ -54,13 +54,13 @@ public class UnitView : MonoBehaviour
 
     public void InitSelectionUI(GameObject selectionUI) => selectionUI.GetComponent<UnitSelectionUi>().UnitController = GetComponent<UnitController>();
 
-    public void InitMultiSelectionUI(GameObject multiSelectionUI)
-    {
-        // print("InitMultiSelectionUI called for " + gameObject.name);
-        // print(multiSelectionUI == null ? "multiSelectionUI is null" : "multiSelectionUI is not null");
-        multiSelectionUI.GetComponent<UnitMultiSelectionUI>().Selectable = GetComponent<Selectable>();
-        multiSelectionUI.GetComponent<UnitMultiSelectionUI>().UnitController = GetComponent<UnitController>();
-    }
+    // public void InitMultiSelectionUI(GameObject multiSelectionUI)
+    // {
+    //     // print("InitMultiSelectionUI called for " + gameObject.name);
+    //     // print(multiSelectionUI == null ? "multiSelectionUI is null" : "multiSelectionUI is not null");
+    //     multiSelectionUI.GetComponent<UnitMultiSelectionUI>().Selectable = GetComponent<Selectable>();
+    //     multiSelectionUI.GetComponent<UnitMultiSelectionUI>().UnitController = GetComponent<UnitController>();
+    // }
 
     public void Move(Vector2 targetPosition, bool teleport)
     {

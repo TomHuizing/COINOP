@@ -8,14 +8,15 @@ using UnityEngine.Events;
 
 public class Selectable : MonoBehaviour
 {
-    private static SelectionManager Manager => SelectionManager.Instance; // Reference to the SelectionManager instance
+    //private static SelectionManager Manager => SelectionManager.Instance; // Reference to the SelectionManager instance
     private static readonly List<Selectable> selectables = new(); // List of currently selected objects
     public static IEnumerable<Selectable> Selectables => selectables; // Public property to access the list of selected objects
 
+    [SerializeField] SelectionManager selectionManager;
     [SerializeField] private bool isMultiSelectable = false; // Flag to indicate if this object can be selected with multiple selection
+    [SerializeField] private SelectionLayer layer;
 
     [SerializeField] private UnityEvent onSelected = new(); // Event triggered when the object is selected
-    [SerializeField] private UnityEvent onMultiSelect = new(); // Event triggered when the object is selected with multiple selection
     [SerializeField] private UnityEvent onDeselected = new(); // Event triggered when the object is deselected
     [SerializeField] private UnityEvent<Selectable> onContext = new();
     [SerializeField] private UnityEvent<Selectable> onAddContext = new();
@@ -26,10 +27,8 @@ public class Selectable : MonoBehaviour
     [SerializeField] private UnityEvent<GameObject> onInitMultiSelectedUi = new(); // Event triggered when the selected UI is initialized
 
     [SerializeField] private GameObject selectedUiPrefab; // UI element to show when the object is selected
-    [SerializeField] private GameObject multiSelectedUiPrefab; // UI element to show when the object is selected with multiple selection
 
     public UnityEvent OnSelected => onSelected; // Public property to access the onSelected event
-    public UnityEvent OnMultiSelect => onMultiSelect; // Public property to access the onMultiSelect event
     public UnityEvent OnDeselected => onDeselected; // Public property to access the onDeselected event
     public UnityEvent<Selectable> OnContext => onContext; // Public property to access the onContext event
     public UnityEvent<Selectable> OnAddContext => onAddContext; // Public property to access the onContext event
@@ -41,7 +40,8 @@ public class Selectable : MonoBehaviour
     public UnityEvent<GameObject> OnInitMultiSelectedUi => onInitMultiSelectedUi; // Public property to access the onInitSelectedUi event
 
     public bool IsMultiSelectable => isMultiSelectable; // Public property to access the isMultiSelectable flag
-    public bool IsSelected => SelectionManager.Instance.Selected.Contains(this); // Check if this object is currently selected
+    public SelectionLayer Layer => layer;
+    public bool IsSelected => selectionManager.Selected.Contains(this); // Check if this object is currently selected
 
     //public void Select() => Manager.Selected = this; // Set this object as the selected object
 
@@ -57,13 +57,13 @@ public class Selectable : MonoBehaviour
 
     public void OnDisable()
     {
-        if (IsSelected && Manager != null)
-            Manager.Deselect(this); // Deselect this object when it is disabled
+        if (IsSelected && selectionManager != null)
+            selectionManager.Deselect(this); // Deselect this object when it is disabled
     }
 
     public void ContextClick(KeyModifiers modifiers)
     {
-        foreach (Selectable selectable in Manager.Selected.Where(s => s != null && s.gameObject.activeInHierarchy))
+        foreach (Selectable selectable in selectionManager.Selected.Where(s => s != null && s.gameObject.activeInHierarchy))
         {
             switch (modifiers)
             {
@@ -88,11 +88,11 @@ public class Selectable : MonoBehaviour
             switch (modifiers)
             {
                 case KeyModifiers.None:
-                    Manager.Select(this); // Select this object if no modifiers are pressed
+                    selectionManager.Select(this); // Select this object if no modifiers are pressed
                     break;
                 case KeyModifiers.Shift:
                     if (IsMultiSelectable)
-                        Manager.Add(this); // Select this object with multiple selection
+                        selectionManager.AddToSelection(this); // Select this object with multiple selection
                     break;
             }
         }
@@ -108,15 +108,15 @@ public class Selectable : MonoBehaviour
         return selectedUi;
     }
     
-    public GameObject GetMultiSelectedUi()
-    {
-        if (multiSelectedUiPrefab == null)
-            return null;
+    // public GameObject GetMultiSelectedUi()
+    // {
+    //     if (multiSelectedUiPrefab == null)
+    //         return null;
 
-        GameObject multiSelectedUi = Instantiate(multiSelectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the multi-selected UI prefab
-        OnInitMultiSelectedUi?.Invoke(multiSelectedUi);
-        return multiSelectedUi;
-    }
+    //     GameObject multiSelectedUi = Instantiate(multiSelectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the multi-selected UI prefab
+    //     OnInitMultiSelectedUi?.Invoke(multiSelectedUi);
+    //     return multiSelectedUi;
+    // }
 }
 
 

@@ -1,9 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using RainbowArt.CleanFlatUI;
 using UnityEngine;
 
 public class SelectionPanel : MonoBehaviour
 {
+    [SerializeField] SelectionManager selectionManager;
     [SerializeField] GameObject selectionPanel;
     [SerializeField] GameObject viewParent;
     [SerializeField] SelectorSimple selector;
@@ -22,9 +25,19 @@ public class SelectionPanel : MonoBehaviour
 
     }
 
-    public void SelectionChanged(Selectable[] selectables)
+    void OnEnable()
     {
-        selection = selectables;
+        selectionManager.OnSelectionChanged += SelectionChanged;
+    }
+
+    void OnDisable()
+    {
+        selectionManager.OnSelectionChanged -= SelectionChanged;
+    }
+
+    public void SelectionChanged(IEnumerable<Selectable> selectables)
+    {
+        selection = selectables.ToArray();
         if (selection.Length == 0)
         {
             selectionPanel.SetActive(false);

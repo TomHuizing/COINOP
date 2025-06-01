@@ -4,12 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MoveController : MonoBehaviour, ITimeReceiver
+public class MoveController : MonoBehaviour
 {
-    [SerializeField] private UnityEvent<Vector2, bool> onMove = new();
-    [SerializeField] private UnityEvent<IEnumerable<RegionController>> onPathChange = new();
+    [SerializeField] private GameClock clock;
     [SerializeField] private RegionController currentRegion; // Reference to the RegionController this unit belongs to
     [SerializeField] private float moveSpeed = 1f; // Speed of the unit's movement
+    [SerializeField] private UnityEvent<Vector2, bool> onMove = new();
+    [SerializeField] private UnityEvent<IEnumerable<RegionController>> onPathChange = new();
 
     private readonly List<RegionController> path = new();
     private float distLeft = 0f; // Distance left to the target region
@@ -31,23 +32,31 @@ public class MoveController : MonoBehaviour, ITimeReceiver
     void Start()
     {
         ResetPosition(); // Reset the unit's position to the current region
-        TimeManager.Instance.RegisterReceiver(this); // Register this unit to receive time updates
-
     }
 
-    public void Tick(TickPeriod period, DateTime dateTime)
+    void OnEnable()
+    {
+        clock.OnTick += Tick;
+    }
+
+    void OnDisable()
+    {
+        clock.OnTick -= Tick;
+    }
+
+    public void Tick(TimeSpan period)
     {
         if (path == null || path.Count == 0)
             return; // Check if the path is valid
 
-        distLeft -= moveSpeed * 10f * ((float)period / 60f); // Decrease the distance left to the target region based on move speed and time
+        distLeft -= moveSpeed * 10f * (float)period.TotalHours; // Decrease the distance left to the target region based on move speed and time
 
         if (distLeft <= 0f)
         {
             distLeft = 0f; // Reset distance left to zero if it goes negative
             CurrentRegion = path.First(); // Update the current region to the next region in the path
             path.Remove(CurrentRegion); // Remove the reached region from the path
-            if(path.Count > 0)
+            if (path.Count > 0)
                 distLeft = Vector2.Distance(currentRegion.transform.position, path[0].transform.position); // Calculate the distance to the target region
             onPathChange.Invoke(path); // Invoke the path change event with the new path
             return;

@@ -2,19 +2,26 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class ClockController : MonoBehaviour, ITimeReceiver
+public class ClockController : MonoBehaviour
 {
+    [SerializeField] private GameClock clock;
     [SerializeField] private TextMeshProUGUI timeText;
 
     void Start()
     {
-        TimeManager.Instance.RegisterReceiver(this);
-        timeText.text = TimeManager.Instance.Now.ToString("HH:mm");
+        clock.Start();
     }
 
-    public void Tick(TickPeriod period, DateTime dateTime) => timeText.text = dateTime.ToString("HH:mm");
-    public void Cycle(CyclePeriod period, DateTime dateTime) {}
-    public void Day(DateTime dateTime) {}
-    public void TimeStart() {}
-    public void TimeStop() {}
+    void OnEnable()
+    {
+        clock.OnTick += Tick;
+        timeText.text = clock.Now.ToString("HH:mm");
+    }
+
+    void OnDisable()
+    {
+        clock.OnTick -= Tick;
+    }
+
+    public void Tick(TimeSpan period) => timeText.text = clock.Now.ToString("HH:mm");
 }

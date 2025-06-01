@@ -17,6 +17,6 @@ public class PeriodicResourceChanger : MonoBehaviour, IPeriodicResourceChanger
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ResourceManager.Instance.RegisterPeriodicResourceChanger(this);
+        // ResourceManager.Instance.RegisterPeriodicResourceChanger(this);
     }
 }

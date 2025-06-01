@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f; // Speed of camera movement
 
     private float cameraZ;
+    private Vector2 moveDirection;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,40 +22,40 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ZoomCamera(Input.GetAxis("Mouse ScrollWheel")); 
+        //ZoomCamera(Input.GetAxis("Mouse ScrollWheel"));
 
 
-        if(Input.GetKey(KeyCode.W))
+        if (moveDirection != Vector2.zero)
         {
-            MoveCamera(Vector2.up);
-        }
-        if(Input.GetKey(KeyCode.S))
-        {
-            MoveCamera(Vector2.down);
-        }
-        if(Input.GetKey(KeyCode.A))
-        {
-            MoveCamera(Vector2.left);
-        }
-        if(Input.GetKey(KeyCode.D))
-        {
-            MoveCamera(Vector2.right);
+            print(moveDirection);
+            MoveCamera(moveDirection);
         }
     }
 
-    private void MoveCamera(Vector3 direction)
+    public void MoveCameraFromInput(InputAction.CallbackContext context)
+    {
+        moveDirection = context.ReadValue<Vector2>();
+    }
+
+    public void MoveCamera(Vector2 direction)
     {
         float halfHeight = Camera.main.orthographicSize;
         float halfWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        Vector3 min = new(-Map.Instance.Size.x / 2 + halfWidth, -Map.Instance.Size.y / 2 + halfHeight, cameraZ);
-        Vector3 max = new(Map.Instance.Size.x / 2 - halfWidth, Map.Instance.Size.y / 2 - halfHeight, cameraZ);
+        Vector2 min = new(-Map.Instance.Size.x / 2 + halfWidth, -Map.Instance.Size.y / 2 + halfHeight);
+        Vector2 max = new(Map.Instance.Size.x / 2 - halfWidth, Map.Instance.Size.y / 2 - halfHeight);
         // Move the camera in the specified direction
-        Camera.main.transform.position = (Camera.main.transform.position + (moveSpeed * Time.deltaTime * Camera.main.orthographicSize * direction)).Clamp(min, max);
+        Vector2 movement = ((Vector2)Camera.main.transform.position + (moveSpeed * Time.deltaTime * Camera.main.orthographicSize * direction)).Clamp(min, max);
+        Camera.main.transform.position = new(movement.x, movement.y, cameraZ);
+    }
+
+    public void ZoomCameraFromInput(InputAction.CallbackContext context)
+    {
+        //ZoomCamera(context.ReadValue<float>());
     }
 
     private void ZoomCamera(float zoomAmount)
     {
-        if(Mathf.Approximately(zoomAmount, 0f))
+        if (Mathf.Approximately(zoomAmount, 0f))
             return; // Ignore if no zoom input
         // Adjust the camera's orthographic size based on the zoom amount
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount * zoomSpeed * Camera.main.orthographicSize, minZoom, maxZoom);

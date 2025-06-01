@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 5841377123789295700}
   - component: {fileID: 8725878051153966408}
   - component: {fileID: 2959432420228665581}
-  - component: {fileID: 3402348366135120088}
   - component: {fileID: 1343459244051945848}
   - component: {fileID: 4653777412795077439}
   - component: {fileID: 2723275337900523488}
+  - component: {fileID: 450950218339929231}
   m_Layer: 0
   m_Name: UnitPrefab
   m_TagString: Untagged
@@ -55,7 +55,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveController: {fileID: 8725878051153966408}
-  contextMenu: {fileID: 0}
 --- !u!114 &8641893836012721916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,23 +82,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8851f7c9896874589093583ea7dd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionManager: {fileID: 11400000, guid: 05ae72c7ca11b7f4abd1b443a38fbecf, type: 2}
   isMultiSelectable: 1
+  layer: 1
   onSelected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: set_ShowMoveLine
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onMultiSelect:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8641893836012721916}
@@ -223,7 +209,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
-  multiSelectedUiPrefab: {fileID: 3216634283982902529, guid: 6e9196b91fb666849982abb030452eb1, type: 3}
 --- !u!114 &8725878051153966408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,6 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97ce5dd173fb34a900d53eba4c7878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clock: {fileID: 0}
+  currentRegion: {fileID: 0}
+  moveSpeed: 1.5
   onMove:
     m_PersistentCalls:
       m_Calls:
@@ -266,8 +254,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  currentRegion: {fileID: 0}
-  moveSpeed: 1.5
 --- !u!114 &2959432420228665581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +261,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c7ca808b620a33438dd3a36c1a8adaf, type: 3}
   m_Name: 
@@ -386,22 +372,6 @@ MonoBehaviour:
   onKeyUp:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3402348366135120088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99ac333af9435f74ca2eea797ebc0689, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  description: 
-  supplies: -1
-  intel: 1
-  influence: 0
 --- !u!114 &1343459244051945848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +558,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0.03
+--- !u!114 &450950218339929231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025838651697782992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24a6917206ec38449975be57f9e89767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  supplies: -1
+  intel: 1
+  influence: 0
+  resourceManager: {fileID: 11400000, guid: b5e8600da307a43468752f42ee49d6c3, type: 2}
 --- !u!1 &3564708152328388063
 GameObject:
   m_ObjectHideFlags: 0
