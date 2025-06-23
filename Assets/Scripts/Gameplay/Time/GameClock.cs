@@ -60,9 +60,9 @@ namespace Gameplay.Time
             set => now.Value = value;
         }
 
-        public event Action<TimeSpan> OnTick;
-        public event Action<TimeSpan> OnCycle;
-        public event Action OnDay;
+        public event Action<DateTime, TimeSpan> OnTick;
+        public event Action<DateTime, TimeSpan> OnCycle;
+        public event Action<DateTime> OnDay;
 
         void OnDestroy() => Stop();
 
@@ -102,11 +102,11 @@ namespace Gameplay.Time
                 Now = Now.AddMinutes((int)tickPeriod);
                 CheckTimers();
                 CheckLerps();
-                OnTick?.Invoke(TickPeriod);
+                OnTick?.Invoke(Now, TickPeriod);
                 if (Now.Ticks % CyclePeriod.Ticks == 0)
-                    OnCycle?.Invoke(CyclePeriod);
+                    OnCycle?.Invoke(Now, CyclePeriod);
                 if (Now.Hour == 0 && Now.Minute == 0 && Now.Second == 0)
-                    OnDay?.Invoke();
+                    OnDay?.Invoke(Now);
 
             }
         }
