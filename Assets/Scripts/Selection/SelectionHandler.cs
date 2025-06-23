@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class SelectionHandler : MonoBehaviour
 {
@@ -13,45 +12,97 @@ public class SelectionHandler : MonoBehaviour
     private Vector2 mouseScreen;
     private bool isDragging = false;
     private bool isPrimaryDown = false;
+    private Rect dragRect;
 
-    [SerializeField] SelectionManager selectionManager;
+    private Selectable selectableUnderMouseOld;
+    private Selectable selectableUnderMouse;
+
+    [SerializeField] private SelectionBox selectionBox;
+    [SerializeField] private SelectionManager selectionManager;
     [SerializeField] private float deadZoneScreen;
     [SerializeField] private float deadZoneWorld;
 
-    public void Select(InputAction.CallbackContext context)
+
+
+    void Update()
     {
-        if (context.phase != InputActionPhase.Performed)
-            return;
-        print("Click");
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        mouseScreen = Input.mousePosition;
+        mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
+        selectableUnderMouseOld = selectableUnderMouse;
+        selectableUnderMouse = GetSelectablesUnderMouse().FirstOrDefault();
+
+        if (selectableUnderMouseOld != selectableUnderMouse)
+        {
+            if (selectableUnderMouseOld != null)
+                selectableUnderMouseOld.Unhover();
+            if (selectableUnderMouse != null)
+                selectableUnderMouse.Hover();
+        }
+        
+        CheckMouseButtonsUp();
+        CheckMouseButtonsDown();
+
+        if (isPrimaryDown)
+            CheckDrag();
+    }
+
+    public void CheckMouseButtonsUp()
+    {
+        if (Input.GetMouseButtonUp(0))
+            PrimaryMouseUp();
+        if (Input.GetMouseButtonUp(1))
+            SecondaryMouseUp();
+        if (Input.GetMouseButtonUp(2))
+            TertiaryMouseUp();
         
     }
 
-    public void MouseMove(InputAction.CallbackContext context)
+    public void CheckMouseButtonsDown()
     {
-        mouseScreen = context.ReadValue<Vector2>();
-        mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
-        if (isPrimaryDown && !isDragging)
+        if(EventSystem.current.IsPointerOverGameObject())
+            return;
+        if (Input.GetMouseButtonDown(0))
+            PrimaryMouseDown();
+        if (Input.GetMouseButtonDown(1))
+            SecondaryMouseDown();
+        if (Input.GetMouseButtonDown(2))
+            TertiaryMouseDown();
+    }
+
+    public void CheckDrag()
+    {
+        if(isDragging)
+            Drag();
+        else if (Vector2.Distance(mouseScreen, mouseStartScreen) > deadZoneScreen || Vector2.Distance(mouseWorld, mouseStartWorld) > deadZoneWorld)
+            StartDrag();
+    }
+
+    private void StartDrag()
+    {
+        isDragging = true;
+        dragRect = Rect.zero;
+        Drag();
+    }
+
+    private void Drag()
+    {
+        Vector2 min = Vector2.Min(mouseStartWorld, mouseWorld);
+        Vector2 size = Vector2.Max(mouseStartWorld, mouseWorld) - min;
+        Rect selectionRect = new(min, size);
+        if(selectionRect != dragRect)
         {
-            if (Vector2.Distance(mouseScreen, mouseStartScreen) > deadZoneScreen || Vector2.Distance(mouseWorld, mouseStartWorld) > deadZoneWorld)
-                isDragging = true;
+            dragRect = selectionRect;
+            selectionManager.Select(GetSelectablesInRect(selectionRect));
+            if (selectionBox != null)
+                selectionBox.SetBox(selectionRect);
         }
     }
 
-    public void PrimaryMouseButton(InputAction.CallbackContext context)
+    private void EndDrag()
     {
-        switch (context.phase)
-        {
-            case InputActionPhase.Started:
-                PrimaryMouseDown();
-                break;
-            case InputActionPhase.Canceled:
-                PrimaryMouseUp();
-                break;
-            default:
-                break;
-        }
+        isDragging = false;
+        if (selectionBox != null)
+            selectionBox.Hide();
     }
 
     private void PrimaryMouseDown()
@@ -61,47 +112,56 @@ public class SelectionHandler : MonoBehaviour
         mouseStartWorld = mouseWorld;
     }
 
+    private void SecondaryMouseDown()
+    {
+
+    }
+
+    private void TertiaryMouseDown()
+    {
+        
+    }
+
     private void PrimaryMouseUp()
     {
+        if (!isPrimaryDown)
+            return;
         isPrimaryDown = false;
-        if (isDragging)
-            EndDrag();
-        else
+        if (!isDragging)
             ClickSelect();
+        else
+            EndDrag();
+    }
+
+    private void SecondaryMouseUp()
+    {
+
+    }
+
+    private void TertiaryMouseUp()
+    {
+        
     }
 
     private void ClickSelect()
     {
-        selectionManager.Select(GetSelectableFromHits(Physics2D.RaycastAll(mouseWorld, Vector2.zero, Mathf.Infinity)));
+        var selectable = GetSelectablesUnderMouse().FirstOrDefault();
+        if(selectable == null)
+            return;
+        selectable.PrimaryClick(Input.GetKey(KeyCode.LeftShift) ? KeyModifiers.Shift : KeyModifiers.None);
     }
 
-    private void StartDrag()
+    private IEnumerable<Selectable> GetSelectablesUnderMouse()
     {
-
-    }
-
-    private void EndDrag()
-    {
-        isDragging = false;
-        Vector2 min = Vector2.Min(mouseStartWorld, mouseWorld);
-        Vector2 size = Vector2.Max(mouseStartWorld, mouseWorld) - min;
-        Rect selectionRect = new(min, size);
-        selectionManager.Select(GetSelectablesInRect(selectionRect));
-    }
-
-    private Selectable GetSelectableFromHits(RaycastHit2D[] hits)
-    {
-        IEnumerable<Selectable> selectables = hits
+        var selectables = Physics2D.RaycastAll(mouseWorld, Vector2.zero, Mathf.Infinity)
             .Where(h => h.collider != null)
             .Select(h => h.collider.GetComponent<Selectable>())
-            .Where(s => s != null);
-        if (selectables.Count() == 0)
-            return null;
-        if (selectables.Count() == 1)
-            return selectables.First();
+            .Where(s => s != null)
+            .ToList();
+        if (selectables.Count <= 1)
+            return selectables;
         var layer = selectables.Max(s => s.Layer);
-        var selectablesInLayer = selectables.Where(s => s.Layer == layer);
-        return selectablesInLayer.First();
+        return selectables.Where(s => s.Layer == layer);
     }
 
     private IEnumerable<Selectable> GetSelectablesInRect(Rect rect)

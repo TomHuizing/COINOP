@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
 
-    [SerializeField] private float zoomSpeed = 1f; // Speed of zooming in/out	
+    [SerializeField] private float zoomSpeed = 0.1f; // Speed of zooming in/out	
     [SerializeField] private float minZoom = 1f; // Minimum zoom level
     [SerializeField] private float maxZoom = 10f; // Maximum zoom level
     [SerializeField] private float moveSpeed = 10f; // Speed of camera movement
@@ -26,10 +26,7 @@ public class CameraController : MonoBehaviour
 
 
         if (moveDirection != Vector2.zero)
-        {
-            print(moveDirection);
             MoveCamera(moveDirection);
-        }
     }
 
     public void MoveCameraFromInput(InputAction.CallbackContext context)
@@ -50,7 +47,9 @@ public class CameraController : MonoBehaviour
 
     public void ZoomCameraFromInput(InputAction.CallbackContext context)
     {
-        //ZoomCamera(context.ReadValue<float>());
+        print("context: " + context);
+
+        ZoomCamera(context.ReadValue<Vector2>().y);
     }
 
     private void ZoomCamera(float zoomAmount)

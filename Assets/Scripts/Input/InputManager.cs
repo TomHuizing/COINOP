@@ -18,19 +18,19 @@ namespace InputSystem
         [SerializeField] private UnityEvent<Vector2, Vector2> onDrag; // Event triggered when the object is dragged
         [SerializeField] private UnityEvent<Vector2, Vector2> onEndDrag; // Event triggered when the object is dragged
 
-        private Mouse mouse; // Mouse input handler
+        // private Mouse mouse; // Mouse input handler
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            mouse = new(this);
-            mouse.OnHover += HandleHover; // Subscribe to the hover event
-            mouse.OnClick += HandleClick; // Subscribe to the click event
-            mouse.OnDrag += HandleDrag; // Subscribe to the drag event
-            mouse.OnEndDrag += HandleEndDrag; // Subscribe to the end drag event
-            mouse.OnScroll += HandleScroll; // Subscribe to the scroll event
-            mouse.OnDrag += (start, end) => onDrag?.Invoke(start, end); // Trigger the drag event
-            mouse.OnEndDrag += (start, end) => onEndDrag?.Invoke(start, end); // Trigger the end drag event
+            // mouse = new(this);
+            // mouse.OnHover += HandleHover; // Subscribe to the hover event
+            // mouse.OnClick += HandleClick; // Subscribe to the click event
+            // mouse.OnDrag += HandleDrag; // Subscribe to the drag event
+            // mouse.OnEndDrag += HandleEndDrag; // Subscribe to the end drag event
+            // mouse.OnScroll += HandleScroll; // Subscribe to the scroll event
+            // mouse.OnDrag += (start, end) => onDrag?.Invoke(start, end); // Trigger the drag event
+            // mouse.OnEndDrag += (start, end) => onEndDrag?.Invoke(start, end); // Trigger the end drag event
         
         }
 

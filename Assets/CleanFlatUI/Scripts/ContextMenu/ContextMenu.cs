@@ -110,6 +110,11 @@ namespace RainbowArt.CleanFlatUI
             rectTransform = GetComponent<RectTransform>();
         }
 
+        void Update()
+        {
+            
+        }
+
         public void Show(Vector2 position, string[] items, Action<int> callback)
         {
             // if(options.Count > 0)

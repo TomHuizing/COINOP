@@ -70,6 +70,7 @@ MonoBehaviour:
   lineWidthMultiplier: 0.01
   moveAnimationTime: 0.8
   movementLineRenderer: {fileID: 4415362927794327874}
+  tooltip: {fileID: 0}
 --- !u!114 &5841377123789295700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,39 +116,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onContext:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4999407892184147358}
-        m_TargetAssemblyTypeName: UnitController, Assembly-CSharp
-        m_MethodName: ContextClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onAddContext:
+  onContextClick:
     m_PersistentCalls:
       m_Calls: []
-  onMenu:
+  onContextAdd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4999407892184147358}
-        m_TargetAssemblyTypeName: UnitController, Assembly-CSharp
-        m_MethodName: ShowMenu
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  onContextMenu:
+    m_PersistentCalls:
+      m_Calls: []
   onHover:
     m_PersistentCalls:
       m_Calls:
@@ -184,21 +161,6 @@ MonoBehaviour:
       - m_Target: {fileID: 8641893836012721916}
         m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
         m_MethodName: InitSelectionUI
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onInitMultiSelectedUi:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: InitMultiSelectionUI
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

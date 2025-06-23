@@ -11,7 +11,7 @@ public class ContextMenuManager : MonoBehaviour
 
     [SerializeField] RainbowArt.CleanFlatUI.ContextMenu contextMenu;
 
-    private Mouse mouse;
+    // private Mouse mouse;
 
     void Awake()
     {
@@ -24,7 +24,7 @@ public class ContextMenuManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        mouse = new(this);
+        //mouse = new(this);
     }
 
     // Update is called once per frame
@@ -35,6 +35,6 @@ public class ContextMenuManager : MonoBehaviour
 
     public void ShowContextMenu(Dictionary<string,Action> items)
     {
-        contextMenu.Show(mouse.ScreenPosition, items.Keys.ToArray(), i => items.Values.ToArray()[i]?.Invoke());
+        // contextMenu.Show(mouse.ScreenPosition, items.Keys.ToArray(), i => items.Values.ToArray()[i]?.Invoke());
     }
 }

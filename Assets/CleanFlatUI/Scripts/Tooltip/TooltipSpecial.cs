@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
 namespace RainbowArt.CleanFlatUI
 {
-    [ExecuteAlways]
     public class TooltipSpecial : MonoBehaviour
     {
+        static public TooltipSpecial Instance { get; private set; }
+
         public enum Anchor
         {
             TopLeft,
@@ -20,25 +17,20 @@ namespace RainbowArt.CleanFlatUI
             BottomMid,
             BottomLeft,
             MidLeft
-        }           
+        }
 
         [SerializeField] TextMeshProUGUI description;
-        [SerializeField] Animator animator; 
-        [SerializeField] RectTransform rectTransform;
-        [SerializeField] Anchor origin = Anchor.BottomLeft;
+        [SerializeField] Anchor anchor = Anchor.BottomLeft;
         [SerializeField] Vector2 offset = new(10, 10);
+        [SerializeField] float delay = 0.5f;
 
+        private RectTransform rectTransform;
+        private Coroutine delayedShowCoroutine;
+        private GameObject view;
          
         public string DescriptionValue
         {
-            get
-            {
-                if (description != null)
-                {
-                    return description.text;
-                }
-                return "";
-            }
+            get => description != null ? description.text : "";
             set
             {
                 if (description != null)
@@ -49,58 +41,72 @@ namespace RainbowArt.CleanFlatUI
             }
         }
 
-        // public void InitTooltip(Vector2 mousePosition, RectTransform areaScope)
-        // { 
-        //     UpdateHeight();                 
-        //     UpdatePosition(mousePosition,areaScope);
-        // }
+        void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+        }
 
-        // void OnEnable()
-        // {
-        //     rectTransform = GetComponent<RectTransform>();
-        //     if (rectTransform == null)
-        //         throw new ArgumentNullException("rectTransform");
-        // }
+        void Start()
+        {
+            rectTransform = GetComponent<RectTransform>();
+            view = GetComponentInChildren<RectTransform>().gameObject;
+            view.SetActive(false);
+        }
+
+        void Update()
+        {
+            if(view.activeSelf)
+                UpdatePosition(Input.mousePosition);
+        }
 
         public void ShowTooltip()
         {
-            gameObject.SetActive(true);
-            if (animator != null)
+            if (delay > 0)
             {
-                animator.enabled = false;
-                animator.gameObject.transform.localScale = Vector3.one;
-                animator.gameObject.transform.localEulerAngles = Vector3.zero;
+                HideTooltip();
+                delayedShowCoroutine = StartCoroutine(DelayedShowTooltip(delay));
             }
-            // PlayAnimation();
+            else
+                ImmediateShowTooltip();
+        }
+        
+        private IEnumerator DelayedShowTooltip(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            ImmediateShowTooltip();
+        }
+
+        private void ImmediateShowTooltip()
+        {
+            if (delayedShowCoroutine != null)
+                StopCoroutine(delayedShowCoroutine);
+            UpdatePosition(Input.mousePosition);
+            view.SetActive(true);
         }
 
         public void HideTooltip()
         {
-            gameObject.SetActive(false);    
-        }   
+            if (delayedShowCoroutine != null)
+                StopCoroutine(delayedShowCoroutine);
+            view.SetActive(false);
+        }
 
-        // void Update()
-        // {
-        //     if(bDelayedUpdate)
-        //     {
-        //         bDelayedUpdate = false;
-        //         UpdateHeight();
-        //     }
-        // }
-        [UnityEngine.ContextMenu("Update Height")]
+        // [UnityEngine.ContextMenu("Update Height")]
         public void UpdateHeight()
         {
             if(description != null)
             {
                 RectTransform selfRect = GetComponent<RectTransform>();
-                // float finalHeight = description.preferredHeight;
                 selfRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, description.preferredHeight);
             }
         }
 
-        public void UpdatePosition(Vector2 position, RectTransform bounds)
+        public void UpdatePosition(Vector2 position)
         {
-            rectTransform.pivot = origin switch
+            rectTransform.pivot = anchor switch
             {
                 Anchor.TopLeft => new(0,1),
                 Anchor.TopMid => new(0.5f, 1),
@@ -115,124 +121,5 @@ namespace RainbowArt.CleanFlatUI
             Vector2 actualOffset = offset * ((rectTransform.pivot - new Vector2(0.5f, 0.5f)) * -2);
             rectTransform.position = position + actualOffset;
         }
-
-        // public void UpdatePosition(Vector2 mousePosition, RectTransform areaScope)
-        // {
-        //     RectTransform selfRect = GetComponent<RectTransform>();
-        //     selfRect.localPosition = new Vector3(mousePosition.x, mousePosition.y, 0);
-        //     Vector3[] corners = new Vector3[4];
-        //     selfRect.GetWorldCorners(corners);
-        //     Vector3[] cornersInArea = new Vector3[4];
-        //     float correctionX = 0;
-        //     float correctionY = 0;
-        //     for (int i = 0; i < 4; i++)
-        //     {
-        //         cornersInArea[i] = areaScope.InverseTransformPoint(corners[i]);
-        //     }
-        //     if (cornersInArea[2].x >= areaScope.rect.xMax)
-        //     {
-        //         if (cornersInArea[0].x - selfRect.rect.width / 2 < areaScope.rect.xMin)
-        //         {
-        //             correctionX = cornersInArea[0].x - selfRect.rect.width / 2 - areaScope.rect.xMin;
-        //         }
-        //         if (cornersInArea[2].y >= areaScope.rect.yMax)
-        //         {
-        //             origin = Origin.LeftBottom;
-        //             if (cornersInArea[0].y - selfRect.rect.height < areaScope.rect.yMin)
-        //             {
-        //                 correctionY = cornersInArea[0].y - selfRect.rect.height - areaScope.rect.yMin;
-        //             }
-        //         }
-        //         else
-        //         {
-        //             origin = Origin.LeftTop;
-        //         }
-        //     }
-        //     else if (cornersInArea[0].x <= areaScope.rect.xMin)
-        //     {
-        //         if (cornersInArea[2].x + selfRect.rect.width / 2 > areaScope.rect.xMax)
-        //         {
-        //             correctionX = cornersInArea[2].x + selfRect.rect.width / 2 - areaScope.rect.xMax;
-        //         }
-        //         if (cornersInArea[2].y >= areaScope.rect.yMax)
-        //         {
-        //             origin = Origin.RightBottom;
-        //             if (cornersInArea[0].y - selfRect.rect.height < areaScope.rect.yMin)
-        //             {
-        //                 correctionY = cornersInArea[0].y - selfRect.rect.height - areaScope.rect.yMin;
-        //             }
-        //         }
-        //         else
-        //         {
-        //             origin = Origin.RightTop;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (cornersInArea[2].y >= areaScope.rect.yMax)
-        //         {
-        //             if (cornersInArea[0].y - selfRect.rect.height < areaScope.rect.yMin)
-        //             {
-        //                 correctionY = cornersInArea[0].y - selfRect.rect.height - areaScope.rect.yMin;
-        //             }
-        //             origin = Origin.Bottom;
-        //         }
-        //         else
-        //         {
-        //             origin = Origin.Top;
-        //         }
-        //     }
-
-        //     Vector3 pos = selfRect.localPosition;
-        //     float selfWidth = selfRect.rect.width;
-        //     float selfHeight = selfRect.rect.height;
-        //     switch (origin)
-        //     {
-        //         case Origin.Top:
-        //         {
-        //             break;
-        //         }
-        //         case Origin.RightTop:
-        //         {
-        //             pos.x = pos.x + selfWidth / 2 - correctionX;
-        //             break;
-        //         }
-        //         case Origin.LeftTop:
-        //         {
-        //             pos.x = pos.x - selfWidth / 2 - correctionX;
-        //             break;
-        //         }
-        //         case Origin.Bottom:
-        //         {
-        //             pos.y = pos.y - selfHeight - correctionY;
-        //             break;
-        //         }
-        //         case Origin.RightBottom:
-        //         {
-        //             pos.x = pos.x + selfWidth / 2 - correctionX;
-        //             pos.y = pos.y - selfHeight - correctionY;
-        //             break;
-        //         }
-        //         case Origin.LeftBottom:
-        //         {
-        //             pos.x = pos.x - selfWidth / 2 - correctionX;
-        //             pos.y = pos.y - selfHeight - correctionY;
-        //             break;
-        //         }
-        //     }
-        //     selfRect.localPosition = pos;
-        // }
-
-        // void PlayAnimation()
-        // {
-        //     if(animator != null)
-        //     {
-        //         if(animator.enabled == false)
-        //         {
-        //             animator.enabled = true;
-        //         }
-        //         animator.Play("Transition",0,0);  
-        //     }            
-        // }
     }
 }

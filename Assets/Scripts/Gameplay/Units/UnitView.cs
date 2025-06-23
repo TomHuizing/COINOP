@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RainbowArt.CleanFlatUI;
 using UnityEngine;
 
 public class UnitView : MonoBehaviour
@@ -100,10 +101,10 @@ public class UnitView : MonoBehaviour
         path.AddRange(newPath ?? Enumerable.Empty<RegionController>());
         UpdateMoveLine();
     }
-    
+
     private void UpdateMoveLine()
     {
-        if(movementLineRenderer == null)
+        if (movementLineRenderer == null)
             return;
         if (path.Count == 0)
         {
@@ -114,5 +115,16 @@ public class UnitView : MonoBehaviour
         List<Vector3> positions = new() { transform.position };
         positions.AddRange(path.Select(region => region.transform.position));
         movementLineRenderer.SetPositions(positions.ToArray());
+    }
+
+    public void ShowTooltip()
+    {
+        TooltipSpecial.Instance.DescriptionValue = name;
+        TooltipSpecial.Instance.ShowTooltip();
+    }
+
+    public void HideTooltip()
+    {
+        TooltipSpecial.Instance.HideTooltip();
     }
 }

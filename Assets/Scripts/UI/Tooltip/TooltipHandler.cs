@@ -13,7 +13,7 @@ public class TooltipHandler : MonoBehaviour
 
     void Start()
     {
-        tooltipManager = TooltipManager.Instance;
+        // tooltipManager = TooltipManager.Instance;
     }
 
     public void ShowTooltip()

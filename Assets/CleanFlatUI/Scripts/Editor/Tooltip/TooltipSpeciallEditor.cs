@@ -10,29 +10,27 @@ namespace RainbowArt.CleanFlatUI
     public class TooltipSpecialEditor : Editor
     {
         SerializedProperty description;
-        SerializedProperty animator;
         SerializedProperty rectTransform;
-        SerializedProperty origin;
+        SerializedProperty anchor;
         SerializedProperty offset;
+        SerializedProperty delay;
         bool showMargins = false;
 
         protected virtual void OnEnable()
         {
             description = serializedObject.FindProperty("description");
-            animator = serializedObject.FindProperty("animator");
-            rectTransform = serializedObject.FindProperty("rectTransform");
-            origin = serializedObject.FindProperty("origin");
+            anchor = serializedObject.FindProperty("anchor");
             offset = serializedObject.FindProperty("offset");
+            delay = serializedObject.FindProperty("delay");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             EditorGUILayout.PropertyField(description);
-            EditorGUILayout.PropertyField(animator);
-            EditorGUILayout.PropertyField(rectTransform);
-            EditorGUILayout.PropertyField(origin);
+            EditorGUILayout.PropertyField(anchor);
             EditorGUILayout.PropertyField(offset);
+            EditorGUILayout.PropertyField(delay);
             serializedObject.ApplyModifiedProperties();
             if (description.objectReferenceValue != null)
             {

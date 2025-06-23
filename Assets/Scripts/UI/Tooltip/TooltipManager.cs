@@ -1,58 +1,23 @@
-using System.Collections;
-using InputSystem;
+using System;
 using RainbowArt.CleanFlatUI;
 using UnityEngine;
 
-public class TooltipManager : MonoBehaviour
+[CreateAssetMenu(fileName = "TooltipManager", menuName = "Singletons/TooltipManager")]
+public class TooltipManager : ScriptableObject
 {
-    static public TooltipManager Instance;
-
     [SerializeField] float delay;
-    [SerializeField] RectTransform canvas;
+    [SerializeField] Canvas canvas;
     [SerializeField] TooltipSpecial tooltip;
-
-    private Mouse mouse;
-    private Coroutine delayCoroutine;
-
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        mouse = new(this);
-    }
-
-    void Update()
-    {
-        if (tooltip.gameObject.activeSelf)
-            tooltip.UpdatePosition(mouse.ScreenPosition, canvas);
-    }
 
     public void ShowTooltip(string message)
     {
-        if (delayCoroutine != null)
-            StopCoroutine(delayCoroutine);
-        tooltip.DescriptionValue = message;
-        tooltip.UpdatePosition(mouse.ScreenPosition, canvas);
-
-        delayCoroutine = StartCoroutine(ShowWithDelay());
+        // Canvas tooltipCanvas = canvas ?? TooltipCanvas.Instance.GetComponent<Canvas>();
+        // tooltip.DescriptionValue = message;
+        // tooltip.ShowTooltip(TimeSpan.FromSeconds(delay));
     }
 
     public void HideTooltip()
     {
-        if (delayCoroutine != null)
-            StopCoroutine(delayCoroutine);
         tooltip.HideTooltip();
-    }
-
-    private IEnumerator ShowWithDelay()
-    {
-        yield return new WaitForSeconds(delay);
-        tooltip.ShowTooltip();
     }
 }

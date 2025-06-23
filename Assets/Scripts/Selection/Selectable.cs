@@ -18,26 +18,24 @@ public class Selectable : MonoBehaviour
 
     [SerializeField] private UnityEvent onSelected = new(); // Event triggered when the object is selected
     [SerializeField] private UnityEvent onDeselected = new(); // Event triggered when the object is deselected
-    [SerializeField] private UnityEvent<Selectable> onContext = new();
-    [SerializeField] private UnityEvent<Selectable> onAddContext = new();
-    [SerializeField] private UnityEvent<Selectable> onMenu = new();
+    [SerializeField] private UnityEvent<Selectable> onContextClick = new();
+    [SerializeField] private UnityEvent<Selectable> onContextAdd = new();
+    [SerializeField] private UnityEvent<Selectable> onContextMenu = new();
     [SerializeField] private UnityEvent onHover = new(); // Event triggered when the object is hovered over
     [SerializeField] private UnityEvent onUnhover = new(); // Event triggered when the object is unhovered
     [SerializeField] private UnityEvent<GameObject> onInitSelectedUi = new(); // Event triggered when the selected UI is initialized
-    [SerializeField] private UnityEvent<GameObject> onInitMultiSelectedUi = new(); // Event triggered when the selected UI is initialized
 
     [SerializeField] private GameObject selectedUiPrefab; // UI element to show when the object is selected
 
     public UnityEvent OnSelected => onSelected; // Public property to access the onSelected event
     public UnityEvent OnDeselected => onDeselected; // Public property to access the onDeselected event
-    public UnityEvent<Selectable> OnContext => onContext; // Public property to access the onContext event
-    public UnityEvent<Selectable> OnAddContext => onAddContext; // Public property to access the onContext event
-    public UnityEvent<Selectable> OnMenu => onMenu; // Public property to access the onContext event
+    public UnityEvent<Selectable> OnContextClick => onContextClick; // Public property to access the onContext event
+    public UnityEvent<Selectable> OnContextAdd => onContextAdd; // Public property to access the onContext event
+    public UnityEvent<Selectable> OnContextMenu => onContextMenu; // Public property to access the onContext event
     public UnityEvent OnHover => onHover; // Public property to access the onHover event
     public UnityEvent OnUnhover => onUnhover; // Public property to access the onUnhover event
 
     public UnityEvent<GameObject> OnInitSelectedUi => onInitSelectedUi; // Public property to access the onInitSelectedUi event
-    public UnityEvent<GameObject> OnInitMultiSelectedUi => onInitMultiSelectedUi; // Public property to access the onInitSelectedUi event
 
     public bool IsMultiSelectable => isMultiSelectable; // Public property to access the isMultiSelectable flag
     public SelectionLayer Layer => layer;
@@ -46,18 +44,16 @@ public class Selectable : MonoBehaviour
     //public void Select() => Manager.Selected = this; // Set this object as the selected object
 
     static public IEnumerable<Selectable> GetSelectablesInBox(Rect selectionBox)
-    {
-        return selectables.Where(s => s != null && selectionBox.Contains(s.transform.position)); // Return all selectables within the given selection box
-    }
+        => selectables.Where(s => s != null && selectionBox.Contains(s.transform.position));
 
-    void Start()
+    void Awake()
     {
-        selectables.Add(this); // Add this object to the list of selectables when it starts
+        selectables.Add(this);
     }
 
     public void OnDisable()
     {
-        if (IsSelected && selectionManager != null)
+        if (IsSelected)
             selectionManager.Deselect(this); // Deselect this object when it is disabled
     }
 
@@ -68,13 +64,13 @@ public class Selectable : MonoBehaviour
             switch (modifiers)
             {
                 case KeyModifiers.None:
-                    selectable.OnContext.Invoke(this);
+                    selectable.OnContextClick.Invoke(this);
                     break;
                 case KeyModifiers.Shift:
-                    selectable.OnAddContext.Invoke(this);
+                    selectable.OnContextAdd.Invoke(this);
                     break;
                 case KeyModifiers.Control:
-                    selectable.OnMenu.Invoke(this);
+                    selectable.OnContextMenu.Invoke(this);
                     break;
                 
             }
@@ -96,6 +92,18 @@ public class Selectable : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void Hover()
+    {
+        if (IsSelected)
+            return; // Do not hover if the object is already selected
+        onHover.Invoke(); // Invoke the hover event
+    }
+
+    public void Unhover()
+    {
+        onUnhover.Invoke(); // Invoke the unhover event
     }
 
     public GameObject GetSelectedUi()

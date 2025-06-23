@@ -14,17 +14,20 @@ public class SelectionBox : MonoBehaviour
 
     void Update()
     {
-        lineRenderer.startWidth = lineWidth * Camera.main.orthographicSize;
-        lineRenderer.endWidth = lineRenderer.startWidth;
+        if(lineRenderer.enabled)
+        {
+            lineRenderer.startWidth = lineWidth * Camera.main.orthographicSize;
+            lineRenderer.endWidth = lineRenderer.startWidth;
+        }
     }
 
-    public void SetBox(Vector2 topLeft, Vector2 botRight)
+    public void SetBox(Rect rect)
     {
         lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, new(topLeft.x, topLeft.y, 0));
-        lineRenderer.SetPosition(1, new(botRight.x, topLeft.y, 0));
-        lineRenderer.SetPosition(2, new(botRight.x, botRight.y, 0));
-        lineRenderer.SetPosition(3, new(topLeft.x, botRight.y, 0));
+        lineRenderer.SetPosition(0, new(rect.xMin, rect.yMax, 0));
+        lineRenderer.SetPosition(1, new(rect.xMax, rect.yMax, 0));
+        lineRenderer.SetPosition(2, new(rect.xMax, rect.yMin, 0));
+        lineRenderer.SetPosition(3, new(rect.xMin, rect.yMin, 0));
     }
 
     public void Hide()

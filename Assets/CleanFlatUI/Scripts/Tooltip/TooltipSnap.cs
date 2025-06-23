@@ -48,7 +48,7 @@ namespace RainbowArt.CleanFlatUI
             RectTransform tooltipRect = tooltip.gameObject.GetComponent<RectTransform>();
             RectTransform tooltipParentRect = tooltipRect.parent as RectTransform;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(tooltipParentRect, mousePosition, cachedEnterEventCamera, out mousePos);
-            tooltip.UpdatePosition(mousePos,areaScope);                       
+            // tooltip.UpdatePosition(mousePos,areaScope);                       
         }
 
         public void OnPointerEnter(PointerEventData eventData)
