@@ -46,8 +46,7 @@ namespace Gameplay.Units
 
         public void ShowMenu(Selectable selectable)
         {
-            if (!selectable.TryGetComponent(out RegionController regionController))
-                return;
+            
         }
 
 

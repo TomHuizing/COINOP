@@ -46,12 +46,7 @@ public class CameraController : MonoBehaviour
         Camera.main.transform.position = new(movement.x, movement.y, cameraZ);
     }
 
-    public void ZoomCameraFromInput(InputAction.CallbackContext context)
-    {
-        print("context: " + context);
-
-        ZoomCamera(context.ReadValue<Vector2>().y);
-    }
+    public void ZoomCameraFromInput(InputAction.CallbackContext context) => ZoomCamera(context.ReadValue<Vector2>().y);
 
     private void ZoomCamera(float zoomAmount)
     {

@@ -1,3 +1,4 @@
+using Gameplay.Selection;
 using UnityEngine;
 
 namespace Gameplay.Map
@@ -36,7 +37,12 @@ namespace Gameplay.Map
             }
         }
 
-        // public void InitSelectionUI(GameObject selectionUI) => selectionUI.GetComponent<RegionSelectionUI>().RegionController = GetComponent<RegionController>();
+        public void InitSelectionUI(GameObject selectionUI)
+        {
+            selectionUI.TryGetComponent<ISelectionUI<RegionController>>(out var selectionUIComponent);
+            if (selectionUIComponent != null)
+                selectionUIComponent.SelectedObject = controller;
+        }
 
         [UnityEngine.ContextMenu("Generate Mesh")]
         public void GenerateMesh()

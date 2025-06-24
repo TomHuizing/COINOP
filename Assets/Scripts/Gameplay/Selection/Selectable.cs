@@ -94,10 +94,8 @@ namespace Gameplay.Selection
 
         public GameObject GetSelectedUi()
         {
-            print($"GetSelectedUi called for {name}");
             if (selectedUiPrefab == null)
                 return null;
-            print($"Instantiating selected UI for {name}");
             GameObject selectedUi = Instantiate(selectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the selected UI prefab
             OnInitSelectedUi?.Invoke(selectedUi);
             return selectedUi;

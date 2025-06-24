@@ -62,14 +62,10 @@ namespace UI.Selection
 
         public void UpdateView(int index)
         {
-            print($"UpdateView {index}");
             if (view != null)
                 Destroy(view);
             if (index == -1)
-            {
-                print("No selection, hiding view");
                 return;
-            }
             view = selection[index].GetSelectedUi();
             view.transform.SetParent(viewParent.transform, false);
             RectTransform rect = view.GetComponent<RectTransform>();

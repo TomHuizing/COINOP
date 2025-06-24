@@ -52,7 +52,7 @@ namespace Gameplay.Components
         {
             if (path == null || path.Count == 0)
                 return; // Check if the path is valid
-
+            
             distLeft -= moveSpeed * 10f * (float)period.TotalHours; // Decrease the distance left to the target region based on move speed and time
 
             if (distLeft <= 0f)

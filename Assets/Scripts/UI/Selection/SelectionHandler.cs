@@ -120,7 +120,25 @@ namespace UI.Selection
         {
             if (selectableUnderMouse == null)
                 return;
-            selectionManager.Selected.FirstOrDefault()?.ContextClick(selectableUnderMouse); //F/out
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                foreach (var selectable in selectionManager.Selected)
+                {
+                    selectable.ContextAlternate(selectableUnderMouse);
+                }
+            }
+            else if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                selectionManager.Selected.FirstOrDefault()?.ContextMenu(selectableUnderMouse);
+            }
+            else
+            {
+                foreach (var selectable in selectionManager.Selected)
+                {
+                    selectable.ContextClick(selectableUnderMouse);
+                }
+            }
+            
             // selectableUnderMouse.ContextMenu(selectableUnderMouse);
             // selectableUnderMouse.ContextAlternate(selectableUnderMouse);
         }
