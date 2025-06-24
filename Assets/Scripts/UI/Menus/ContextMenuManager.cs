@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using InputSystem;
 using UnityEngine;
 
 public class ContextMenuManager : MonoBehaviour
@@ -9,7 +7,7 @@ public class ContextMenuManager : MonoBehaviour
     public static ContextMenuManager Instance;
 
 
-    [SerializeField] RainbowArt.CleanFlatUI.ContextMenu contextMenu;
+    // [SerializeField] RainbowArt.CleanFlatUI.ContextMenu contextMenu;
 
     // private Mouse mouse;
 

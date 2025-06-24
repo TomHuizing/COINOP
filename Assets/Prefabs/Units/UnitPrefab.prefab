@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 4999407892184147358}
   - component: {fileID: 8641893836012721916}
   - component: {fileID: 5841377123789295700}
-  - component: {fileID: 8725878051153966408}
-  - component: {fileID: 2959432420228665581}
   - component: {fileID: 1343459244051945848}
   - component: {fileID: 4653777412795077439}
   - component: {fileID: 2723275337900523488}
+  - component: {fileID: 5981370566446540995}
   - component: {fileID: 450950218339929231}
   m_Layer: 0
   m_Name: UnitPrefab
@@ -54,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2729bb859d1091b41aa79c7ee1bdd823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveController: {fileID: 8725878051153966408}
+  moveController: {fileID: 5981370566446540995}
 --- !u!114 &8641893836012721916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +69,6 @@ MonoBehaviour:
   lineWidthMultiplier: 0.01
   moveAnimationTime: 0.8
   movementLineRenderer: {fileID: 4415362927794327874}
-  tooltip: {fileID: 0}
 --- !u!114 &5841377123789295700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,8 +116,20 @@ MonoBehaviour:
         m_CallState: 2
   onContextClick:
     m_PersistentCalls:
-      m_Calls: []
-  onContextAdd:
+      m_Calls:
+      - m_Target: {fileID: 4999407892184147358}
+        m_TargetAssemblyTypeName: UnitController, Assembly-CSharp
+        m_MethodName: ContextClick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onContextAlternate:
     m_PersistentCalls:
       m_Calls: []
   onContextMenu:
@@ -171,169 +181,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
---- !u!114 &8725878051153966408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b97ce5dd173fb34a900d53eba4c7878, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clock: {fileID: 0}
-  currentRegion: {fileID: 0}
-  moveSpeed: 1.5
-  onMove:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onPathChange:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: PathChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2959432420228665581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c7ca808b620a33438dd3a36c1a8adaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer: 1
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  onPrimaryClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5841377123789295700}
-        m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
-        m_MethodName: PrimaryClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onSecondaryClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5841377123789295700}
-        m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
-        m_MethodName: ContextClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTertiaryClick:
-    m_PersistentCalls:
-      m_Calls: []
-  onMouseEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4653777412795077439}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1343459244051945848}
-        m_TargetAssemblyTypeName: TooltipHandler, Assembly-CSharp
-        m_MethodName: ShowTooltip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onMouseExit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4653777412795077439}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1343459244051945848}
-        m_TargetAssemblyTypeName: TooltipHandler, Assembly-CSharp
-        m_MethodName: HideTooltip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onEscape:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onSpace:
-    m_PersistentCalls:
-      m_Calls: []
-  onKeyDown:
-    m_PersistentCalls:
-      m_Calls: []
-  onKeyUp:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1343459244051945848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,6 +367,27 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0.03
+--- !u!114 &5981370566446540995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025838651697782992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b6d7f4f395e674a9e6b6e5d3330ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clock: {fileID: 11400000, guid: 360e3b33a704c8040a0e3c9cb295df25, type: 2}
+  currentRegion: {fileID: 0}
+  moveSpeed: 1
+  onMove:
+    m_PersistentCalls:
+      m_Calls: []
+  onPathChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &450950218339929231
 MonoBehaviour:
   m_ObjectHideFlags: 0

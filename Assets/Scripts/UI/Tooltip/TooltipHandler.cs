@@ -28,6 +28,6 @@ public class TooltipHandler : MonoBehaviour
     {
         // TooltipCanvas.Instance.Tooltip = null;
         // onTooltipHide?.Invoke();
-        tooltipManager.HideTooltip();
+        // tooltipManager.HideTooltip();
     }
 }

@@ -1,27 +1,31 @@
 using System;
+using Gameplay.Time;
 using TMPro;
 using UnityEngine;
 
-public class ClockController : MonoBehaviour
+namespace UI.Time
 {
-    [SerializeField] private GameClock clock;
-    [SerializeField] private TextMeshProUGUI timeText;
-
-    void Start()
+    public class ClockController : MonoBehaviour
     {
-        clock.Start();
-    }
+        [SerializeField] private GameClock clock;
+        [SerializeField] private TextMeshProUGUI timeText;
 
-    void OnEnable()
-    {
-        clock.OnTick += Tick;
-        timeText.text = clock.Now.ToString("HH:mm");
-    }
+        void Start()
+        {
+            clock.Start();
+        }
 
-    void OnDisable()
-    {
-        clock.OnTick -= Tick;
-    }
+        void OnEnable()
+        {
+            clock.OnTick += Tick;
+            timeText.text = clock.Now.ToString("HH:mm");
+        }
 
-    public void Tick(TimeSpan period) => timeText.text = clock.Now.ToString("HH:mm");
+        void OnDisable()
+        {
+            clock.OnTick -= Tick;
+        }
+
+        public void Tick(DateTime now, TimeSpan period) => timeText.text = now.ToString("HH:mm");
+    }
 }

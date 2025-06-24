@@ -3,33 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
-public class MapPolygon : MonoBehaviour
+namespace Gameplay.Map
 {
-    private readonly List<Vector2> vertices = new();
-
-    public IEnumerable<Vector2> Vertices => vertices;
-
-    public void SetVertices(IEnumerable<Vector2> newVertices)
+    [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshRenderer))]
+    public class MapPolygon : MonoBehaviour
     {
-        vertices.Clear();
-        vertices.AddRange(newVertices);
-        vertices.Reverse();
-        
-        
-        MeshFilter filter = GetComponent<MeshFilter>();
-        Triangulator triangulator = new(vertices.ToArray());
-        int[] indices = triangulator.Triangulate();
+        private readonly List<Vector2> vertices = new();
 
-        Mesh mesh = new()
+        public IEnumerable<Vector2> Vertices => vertices;
+
+        public void SetVertices(IEnumerable<Vector2> newVertices)
         {
-            vertices = vertices.Select(v => (Vector3)v).ToArray(),
-            triangles = indices
-        };
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
+            vertices.Clear();
+            vertices.AddRange(newVertices);
+            vertices.Reverse();
+        
+        
+            MeshFilter filter = GetComponent<MeshFilter>();
+            Triangulator triangulator = new(vertices.ToArray());
+            int[] indices = triangulator.Triangulate();
 
-        filter.sharedMesh = mesh;
+            Mesh mesh = new()
+            {
+                vertices = vertices.Select(v => (Vector3)v).ToArray(),
+                triangles = indices
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            filter.sharedMesh = mesh;
+        }
     }
 }
