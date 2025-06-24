@@ -21,6 +21,7 @@ public class ContextMenuItem : MonoBehaviour
 
     public void Init(string text)
     {
+        name = text;
         label.text = text;
     }
 

@@ -4,21 +4,18 @@ using UnityEngine.Events;
 
 namespace UI.Elements
 {
-    [Serializable]
     public class NamedAction
     {
 
-        [SerializeField] private UnityEvent OnInvokeEvent;
-        [SerializeField] private string text;
-
-        public string Text { get => text; set => text = value; }
+        public string Name { get; set; }
         public event Action OnInvoke;
 
-
-        public void Invoke()
+        public NamedAction(string name, Action onInvoke)
         {
-            OnInvokeEvent?.Invoke();
-            OnInvoke?.Invoke();
+            Name = name;
+            OnInvoke += onInvoke;
         }
+
+        public void Invoke() => OnInvoke?.Invoke();
     }
 }
