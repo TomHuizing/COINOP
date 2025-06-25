@@ -22,9 +22,6 @@ namespace Gameplay.Selection
         [SerializeField] private UnityEvent<Selectable> onContextMenu = new();
         [SerializeField] private UnityEvent onHover = new(); // Event triggered when the object is hovered over
         [SerializeField] private UnityEvent onUnhover = new(); // Event triggered when the object is unhovered
-        [SerializeField] private UnityEvent<GameObject> onFillSelectionPanel = new(); // Event triggered when the selected UI is initialized
-
-        [SerializeField] private GameObject selectedUiPrefab; // UI element to show when the object is selected
 
         public UnityEvent OnSelected => onSelected; // Public property to access the onSelected event
         public UnityEvent OnDeselected => onDeselected; // Public property to access the onDeselected event
@@ -33,8 +30,6 @@ namespace Gameplay.Selection
         public UnityEvent<Selectable> OnContextMenu => onContextMenu; // Public property to access the onContext event
         public UnityEvent OnHover => onHover; // Public property to access the onHover event
         public UnityEvent OnUnhover => onUnhover; // Public property to access the onUnhover event
-
-        public UnityEvent<GameObject> OnFillSelectionPanel => onFillSelectionPanel; // Public property to access the onInitSelectedUi event
 
         public bool IsMultiSelectable => isMultiSelectable; // Public property to access the isMultiSelectable flag
         public SelectionLayer Layer => layer;
@@ -45,15 +40,16 @@ namespace Gameplay.Selection
         static public IEnumerable<Selectable> GetSelectablesInBox(Rect selectionBox)
             => selectables.Where(s => s != null && selectionBox.Contains(s.transform.position));
 
-        void Awake()
+        void OnEnable()
         {
-            selectables.Add(this);
+            selectables.Add(this); // Add this object to the list of selected objects when it is enabled
         }
 
-        public void OnDisable()
+        void OnDisable()
         {
             if (IsSelected)
                 selectionManager.Deselect(this); // Deselect this object when it is disabled
+            selectables.Remove(this); // Remove this object from the list of selected objects when it is disabled
         }
 
         public void ContextClick(Selectable selectable) => onContextClick.Invoke(selectable); // Invoke the context click event
@@ -63,53 +59,8 @@ namespace Gameplay.Selection
         internal void Select() => onSelected.Invoke(); // Invoke the selected event
         internal void Deselect() => onDeselected.Invoke(); // Invoke the selected event
 
-        // public void PrimaryClick(KeyModifiers modifiers)
-        // {
-        //     if (!IsSelected)
-        //     {
-        //         switch (modifiers)
-        //         {
-        //             case KeyModifiers.None:
-        //                 selectionManager.Select(this); // Select this object if no modifiers are pressed
-        //                 break;
-        //             case KeyModifiers.Shift:
-        //                 if (IsMultiSelectable)
-        //                     selectionManager.AddToSelection(this); // Select this object with multiple selection
-        //                 break;
-        //         }
-        //     }
-        // }
-
-        public void Hover()
-        {
-            if (IsSelected)
-                return; // Do not hover if the object is already selected
-            onHover.Invoke(); // Invoke the hover event
-        }
-
-        public void Unhover()
-        {
-            onUnhover.Invoke(); // Invoke the unhover event
-        }
-
-        public void FillSelectionPanel(GameObject parent)
-        {
-            // if (selectedUiPrefab == null)
-            //     return null;
-            // GameObject selectedUi = Instantiate(selectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the selected UI prefab
-            OnFillSelectionPanel?.Invoke(parent);
-            // return selectedUi;
-        }
-
-        // public GameObject GetMultiSelectedUi()
-        // {
-        //     if (multiSelectedUiPrefab == null)
-        //         return null;
-
-        //     GameObject multiSelectedUi = Instantiate(multiSelectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the multi-selected UI prefab
-        //     OnInitMultiSelectedUi?.Invoke(multiSelectedUi);
-        //     return multiSelectedUi;
-        // }
+        public void Hover() => onHover.Invoke(); // Invoke the hover event
+        public void Unhover() => onUnhover.Invoke(); // Invoke the unhover event
     }
 
 

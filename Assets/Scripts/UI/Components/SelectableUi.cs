@@ -11,19 +11,21 @@ namespace UI.Components
     {
         [SerializeField] private GameObject selectedUiPrefab;
 
-        private T controller;
         private Selectable selectable;
 
-        private Dictionary<Type, IEnumerable<NamedAction>> contextMenus = new();
+        private readonly Dictionary<Type, IEnumerable<NamedAction>> contextMenus = new();
 
-        protected string TooltipText { get; set; } = string.Empty;
+        private Func<string> getTooltipText;
+
+        protected T Controller { get; private set; }
+        //protected string TooltipText { get; set; } = string.Empty;
         protected Selectable Context { get; private set; }
         protected Type ContextType { get; private set; }
 
         protected virtual void Awake()
         {
-            controller = GetComponent<T>();
-            if (controller == null)
+            Controller = GetComponent<T>();
+            if (Controller == null)
             {
                 Debug.LogError($"No component of type {typeof(T).Name} found on {gameObject.name}.");
             }
@@ -47,11 +49,21 @@ namespace UI.Components
 
             GameObject selectedUi = Instantiate(selectedUiPrefab, parent.transform);
             if (selectedUi.TryGetComponent(out ISelectionUI<T> selectionUi))
-                selectionUi.SelectedObject = controller;
+                selectionUi.SelectedObject = Controller;
             selectedUi.transform.SetParent(parent.transform, false);
             selectedUi.transform.localScale = Vector3.one;
             selectedUi.transform.localPosition = Vector3.zero;
             selectedUi.SetActive(true);
+        }
+
+        protected void SetTooltipText(string text)
+        {
+            getTooltipText = () => text;
+        }
+
+        protected void SetTooltipText(Func<string> getText)
+        {
+            getTooltipText = getText;
         }
 
         protected void SetContextMenu<TContext>(IEnumerable<NamedAction> actions) where TContext : MonoBehaviour
@@ -76,7 +88,7 @@ namespace UI.Components
 
         private void ShowContextMenu(Type t, Component context)
         {
-            if (context == controller)
+            if (context == Controller)
                 ShowContextMenu();
             else if (contextMenus.TryGetValue(t, out IEnumerable<NamedAction> contextMenu))
                 ContextMenu.Instance.Show(contextMenu);
@@ -92,9 +104,10 @@ namespace UI.Components
 
         protected void ShowTooltip()
         {
-            if (!string.IsNullOrEmpty(TooltipText))
+            string text = getTooltipText != null ? getTooltipText() : string.Empty;
+            if (!string.IsNullOrEmpty(text))
             {
-                Tooltip.Instance.DescriptionValue = TooltipText;
+                Tooltip.Instance.DescriptionValue = text;
                 Tooltip.Instance.Show();
             }
             else

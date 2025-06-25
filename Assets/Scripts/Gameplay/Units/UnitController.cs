@@ -1,16 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Common;
 using Gameplay.Components;
 using Gameplay.Map;
+using Gameplay.Modifiers;
 using Gameplay.Selection;
 using UnityEngine;
 
 namespace Gameplay.Units
 {
-    public class UnitController : MonoBehaviour
+    public class UnitController : MonoBehaviour, IController
     {
-        private Dictionary<string, Action<RegionController>> regionContextActions;
 
         [SerializeField] private MoveController moveController;
         [SerializeField] private ContextMenu contextMenu;
@@ -18,6 +18,7 @@ namespace Gameplay.Units
         private UnitModel model;
 
         public string Name => model.Name;
+        public string Description { get; private set; } = "Unit Controller";
         public float Strength => model.Strength;
         public float Supplies => model.Supplies;
 
@@ -25,16 +26,10 @@ namespace Gameplay.Units
         public RegionController NextRegion => moveController != null ? moveController.Path.FirstOrDefault() : null;
         public RegionController CurrentRegion => moveController != null ? moveController.CurrentRegion : null;
 
-        public string Description => throw new System.NotImplementedException();
 
         void Start()
         {
             model = new UnitModel(name);
-            regionContextActions = new()
-            {
-                { "Patrol Here", r => moveController.SetTarget(r) },
-                { "Plan Mission", r => Debug.Log($"Planning mission in region {r.name}") }
-            };
         }
 
         public void ContextClick(Selectable selectable)
@@ -44,11 +39,9 @@ namespace Gameplay.Units
                 moveController.SetTarget(regionController);
         }
 
-        public void ShowMenu(Selectable selectable)
+        public void AddModifier(IModifier modifier)
         {
-            
+            throw new NotImplementedException();
         }
-
-
     }
 }

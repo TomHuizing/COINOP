@@ -28,6 +28,8 @@ namespace UI.Components
                 new(() => $"Follow {Context.name}", () => Debug.Log($"Following unit {Context.name}")),
                 new(() => $"Attack {Context.name}", () => Debug.Log("Attack action invoked")),
             });
+
+            SetTooltipText(() => $"Unit: {Controller.name}\nCurrent Region: {(Controller.CurrentRegion == null ? Controller.CurrentRegion.name : "None")}");
         }
     }
 }

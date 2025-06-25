@@ -10,24 +10,24 @@ namespace Gameplay.Map
         public Vector2 Center { get; private set; }
         public readonly List<RegionModel> Neighbors = new();
 
-        public float Support { get; private set; }
-        public float Control { get; private set; }
-        public float Infra { get; private set; }
+        public RegionStats Stats { get; private set; }
 
         public RegionModel(string name, Vector2 center)
         {
             Name = name;
             Center = center;
-
-            Support = Random.Range(0f, 1f);
-            Control = Random.Range(0f, 1f);
-            Infra = Random.Range(0f, 1f);
+            Stats = RegionStats.Random;
         }
 
         public void UpdateNeighbors(IEnumerable<RegionModel> neighbors)
         {
             Neighbors.Clear();
             Neighbors.AddRange(neighbors);
+        }
+
+        public void AddStats(RegionStats stats)
+        {
+            Stats += stats;
         }
     }
 }
