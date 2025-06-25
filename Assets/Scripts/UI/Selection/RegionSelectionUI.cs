@@ -21,18 +21,18 @@ namespace UI.Selection
             set
             {
                 regionController = value;
-                controlText.text = regionController.Control.ToString("0%");
-                supportText.text = regionController.Support.ToString("0%");
-                infraText.text = regionController.Infra.ToString("0");
+                controlText.text = regionController.Stats.Control.ToString("0%");
+                supportText.text = regionController.Stats.PopularSupport.ToString("0%");
+                infraText.text = regionController.Stats.Infrastructure.ToString("0");
             }
         }
 
         // Update is called once per frame
         void Update()
         {
-            controlText.text = regionController.Control.ToString("0%");
-            supportText.text = regionController.Support.ToString("0%");
-            infraText.text = regionController.Infra.ToString("0");
+            controlText.text = regionController.Stats.Control.ToString("0%");
+            supportText.text = regionController.Stats.PopularSupport.ToString("0%");
+            infraText.text = regionController.Stats.Infrastructure.ToString("0");
         }
     }
 }
