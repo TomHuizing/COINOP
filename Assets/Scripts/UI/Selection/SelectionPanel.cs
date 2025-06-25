@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Selection;
+using UI.Components;
 using UI.Elements;
 using UnityEngine;
 
@@ -14,12 +15,6 @@ namespace UI.Selection
         [SerializeField] Selector selector;
 
         Selectable[] selection;
-        GameObject view;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        // void Start()
-        // {
-        //     selector.OnValueChanged += UpdateView;
-        // }
 
         // Update is called once per frame
         void Update()
@@ -43,35 +38,16 @@ namespace UI.Selection
             // UpdateView(selection[selectionIndex]);
         }
 
-        // public void NextSelection()
-        // {
-        //     selectionIndex++;
-        //     if (selectionIndex >= selection.Length)
-        //         selectionIndex = 0;
-        //     UpdateView(selection[selectionIndex]);
-
-        // }
-
-        // public void PrevSelection()
-        // {
-        //     selectionIndex--;
-        //     if (selectionIndex < 0)
-        //         selectionIndex = selection.Length - 1;
-        //     UpdateView(selection[selectionIndex]);
-        // }
-
         public void UpdateView(int index)
         {
-            if (view != null)
-                Destroy(view);
+            foreach(RectTransform child in viewParent.transform)
+            {
+                Destroy(child.gameObject);
+            }
             if (index == -1)
                 return;
-            view = selection[index].GetSelectedUi();
-            view.transform.SetParent(viewParent.transform, false);
-            RectTransform rect = view.GetComponent<RectTransform>();
-            rect.anchoredPosition = Vector2.zero;
-            // view.GetComponent<RectTransform>().
-            view.SetActive(true);
+            if(selection[index].TryGetComponent<ISelectableUi>(out var selectableUi))
+                selectableUi.ApplySelectionUi(viewParent);
         }
     }
 }

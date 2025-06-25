@@ -180,6 +180,8 @@ namespace UI.Selection
 
         private IEnumerable<Selectable> GetSelectablesUnderMouse()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return Enumerable.Empty<Selectable>();
             var selectables = Physics2D.RaycastAll(mouseWorld, Vector2.zero, Mathf.Infinity)
                 .Where(h => h.collider != null)
                 .Select(h => h.collider.GetComponent<Selectable>())

@@ -7,22 +7,11 @@ public class ContextMenuItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI label;
 
     public event Action OnClick;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public void Init(string text, bool enabled = true)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void Init(string text)
-    {
-        name = text;
         label.text = text;
+        name = text;
     }
 
     public void Click() => OnClick?.Invoke();

@@ -20,6 +20,7 @@ namespace UI.Elements
             MidLeft
         }
 
+        [SerializeField] GameObject view;
         [SerializeField] TextMeshProUGUI description;
         [SerializeField] Anchor anchor = Anchor.BottomLeft;
         [SerializeField] Vector2 offset = new(10, 10);
@@ -27,7 +28,7 @@ namespace UI.Elements
 
         private RectTransform rectTransform;
         private Coroutine delayedShowCoroutine;
-        private GameObject view;
+        // private GameObject view;
          
         public string DescriptionValue
         {
@@ -53,7 +54,7 @@ namespace UI.Elements
         void Start()
         {
             rectTransform = GetComponent<RectTransform>();
-            view = GetComponentInChildren<RectTransform>().gameObject;
+            // view = GetComponentInChildren<RectTransform>().gameObject;
             view.SetActive(false);
         }
 
@@ -63,11 +64,11 @@ namespace UI.Elements
                 UpdatePosition(Input.mousePosition);
         }
 
-        public void ShowTooltip()
+        public void Show()
         {
             if (delay > 0)
             {
-                HideTooltip();
+                Hide();
                 delayedShowCoroutine = StartCoroutine(DelayedShowTooltip(delay));
             }
             else
@@ -88,7 +89,7 @@ namespace UI.Elements
             view.SetActive(true);
         }
 
-        public void HideTooltip()
+        public void Hide()
         {
             if (delayedShowCoroutine != null)
                 StopCoroutine(delayedShowCoroutine);

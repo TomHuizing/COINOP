@@ -60,9 +60,9 @@ namespace Gameplay.Units
 
         public void InitSelectionUI(GameObject selectionUI)
         {
-            selectionUI.TryGetComponent<ISelectionUI<UnitController>>(out var selectionUIComponent);
-            if (selectionUIComponent != null)
-                selectionUIComponent.SelectedObject = controller;
+            // selectionUI.TryGetComponent<ISelectionUI<UnitController>>(out var selectionUIComponent);
+            // if (selectionUIComponent != null)
+            //     selectionUIComponent.SelectedObject = controller;
         }
 
         public void Move(Vector2 targetPosition, bool teleport)
@@ -118,16 +118,5 @@ namespace Gameplay.Units
             positions.AddRange(path.Select(region => region.transform.position));
             movementLineRenderer.SetPositions(positions.ToArray());
         }
-
-        // public void ShowTooltip()
-        // {
-        //     TooltipSpecial.Instance.DescriptionValue = name;
-        //     TooltipSpecial.Instance.ShowTooltip();
-        // }
-
-        // public void HideTooltip()
-        // {
-        //     TooltipSpecial.Instance.HideTooltip();
-        // }
     }
 }

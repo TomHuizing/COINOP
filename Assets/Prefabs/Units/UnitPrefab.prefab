@@ -11,13 +11,12 @@ GameObject:
   - component: {fileID: 4932344208332869671}
   - component: {fileID: 4999407892184147358}
   - component: {fileID: 8641893836012721916}
+  - component: {fileID: 9210239539434323899}
   - component: {fileID: 5841377123789295700}
-  - component: {fileID: 1343459244051945848}
   - component: {fileID: 4653777412795077439}
   - component: {fileID: 2723275337900523488}
   - component: {fileID: 5981370566446540995}
   - component: {fileID: 450950218339929231}
-  - component: {fileID: 9210239539434323899}
   m_Layer: 0
   m_Name: UnitPrefab
   m_TagString: Untagged
@@ -70,6 +69,19 @@ MonoBehaviour:
   lineWidthMultiplier: 0.01
   moveAnimationTime: 0.8
   movementLineRenderer: {fileID: 4415362927794327874}
+--- !u!114 &9210239539434323899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025838651697782992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759685b4614cbbe468e1b8fc1a4003f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
 --- !u!114 &5841377123789295700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +151,7 @@ MonoBehaviour:
       - m_Target: {fileID: 9210239539434323899}
         m_TargetAssemblyTypeName: UI.Components.UnitUI, UI
         m_MethodName: ShowContextMenu
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -163,6 +175,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 9210239539434323899}
+        m_TargetAssemblyTypeName: UI.Components.UnitUI, UI
+        m_MethodName: ShowTooltip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onUnhover:
     m_PersistentCalls:
       m_Calls:
@@ -178,13 +202,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onInitSelectedUi:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: InitSelectionUI
-        m_Mode: 0
+      - m_Target: {fileID: 9210239539434323899}
+        m_TargetAssemblyTypeName: UI.Components.UnitUI, UI
+        m_MethodName: HideTooltip
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -193,38 +214,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
---- !u!114 &1343459244051945848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf07c2afcab6a84438dfe992361ec542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltipPrefab: {fileID: 2726288394981291819, guid: be33ce21ac513d8439bfedcb2a00e131, type: 3}
-  onTooltipShow:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: TooltipShow
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTooltipHide:
+  onFillSelectionPanel:
     m_PersistentCalls:
       m_Calls: []
+  selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
 --- !u!120 &4653777412795077439
 LineRenderer:
   serializedVersion: 2
@@ -430,19 +423,6 @@ MonoBehaviour:
   intel: 1
   influence: 0
   resourceManager: {fileID: 11400000, guid: b5e8600da307a43468752f42ee49d6c3, type: 2}
---- !u!114 &9210239539434323899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 759685b4614cbbe468e1b8fc1a4003f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiController: {fileID: 11400000, guid: 99bedbadb7a5f11438d56a7e2c5fabe8, type: 2}
 --- !u!1 &3564708152328388063
 GameObject:
   m_ObjectHideFlags: 0

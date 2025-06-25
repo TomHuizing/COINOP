@@ -22,7 +22,7 @@ namespace Gameplay.Selection
         [SerializeField] private UnityEvent<Selectable> onContextMenu = new();
         [SerializeField] private UnityEvent onHover = new(); // Event triggered when the object is hovered over
         [SerializeField] private UnityEvent onUnhover = new(); // Event triggered when the object is unhovered
-        [SerializeField] private UnityEvent<GameObject> onInitSelectedUi = new(); // Event triggered when the selected UI is initialized
+        [SerializeField] private UnityEvent<GameObject> onFillSelectionPanel = new(); // Event triggered when the selected UI is initialized
 
         [SerializeField] private GameObject selectedUiPrefab; // UI element to show when the object is selected
 
@@ -34,7 +34,7 @@ namespace Gameplay.Selection
         public UnityEvent OnHover => onHover; // Public property to access the onHover event
         public UnityEvent OnUnhover => onUnhover; // Public property to access the onUnhover event
 
-        public UnityEvent<GameObject> OnInitSelectedUi => onInitSelectedUi; // Public property to access the onInitSelectedUi event
+        public UnityEvent<GameObject> OnFillSelectionPanel => onFillSelectionPanel; // Public property to access the onInitSelectedUi event
 
         public bool IsMultiSelectable => isMultiSelectable; // Public property to access the isMultiSelectable flag
         public SelectionLayer Layer => layer;
@@ -92,13 +92,13 @@ namespace Gameplay.Selection
             onUnhover.Invoke(); // Invoke the unhover event
         }
 
-        public GameObject GetSelectedUi()
+        public void FillSelectionPanel(GameObject parent)
         {
-            if (selectedUiPrefab == null)
-                return null;
-            GameObject selectedUi = Instantiate(selectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the selected UI prefab
-            OnInitSelectedUi?.Invoke(selectedUi);
-            return selectedUi;
+            // if (selectedUiPrefab == null)
+            //     return null;
+            // GameObject selectedUi = Instantiate(selectedUiPrefab, Vector3.zero, Quaternion.identity); // Instantiate the selected UI prefab
+            OnFillSelectionPanel?.Invoke(parent);
+            // return selectedUi;
         }
 
         // public GameObject GetMultiSelectedUi()

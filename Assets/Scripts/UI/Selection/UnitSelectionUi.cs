@@ -13,18 +13,6 @@ namespace UI.Selection
         [SerializeField] private TextMeshProUGUI strengthText;
         [SerializeField] private TextMeshProUGUI suppliesText;
 
-        // public UnitController UnitController
-        // {
-        //     get => unitController;
-        //     set
-        //     {
-        //         unitController = value;
-        //         targetText.text = unitController.TargetRegion != null ? unitController.NextRegion.Name + " | " + unitController.TargetRegion.Name : "";
-        //         strengthText.text = unitController.Strength.ToString("0%");
-        //         suppliesText.text = unitController.Supplies.ToString("0%");
-        //     }
-        // }
-
         public UnitController SelectedObject
         {
             get => unitController;

@@ -15,9 +15,8 @@ GameObject:
   - component: {fileID: 7616286881899936953}
   - component: {fileID: 758808689391853167}
   - component: {fileID: 385085749880942624}
-  - component: {fileID: 4781767157057349466}
   - component: {fileID: 1677142432931377375}
-  - component: {fileID: 3929398274840160826}
+  - component: {fileID: 6478916137757213890}
   m_Layer: 0
   m_Name: RegionPrefab
   m_TagString: Untagged
@@ -322,13 +321,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onContext:
+  onContextClick:
     m_PersistentCalls:
       m_Calls: []
-  onAddContext:
+  onContextAlternate:
     m_PersistentCalls:
       m_Calls: []
-  onMenu:
+  onContextMenu:
     m_PersistentCalls:
       m_Calls: []
   onHover:
@@ -361,143 +360,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onInitSelectedUi:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1677142432931377375}
-        m_TargetAssemblyTypeName: RegionView, Assembly-CSharp
-        m_MethodName: InitSelectionUI
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onInitMultiSelectedUi:
+  onFillSelectionPanel:
     m_PersistentCalls:
       m_Calls: []
   selectedUiPrefab: {fileID: 1808082949010307935, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}
---- !u!114 &4781767157057349466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8814900622852560466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c7ca808b620a33438dd3a36c1a8adaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer: 2
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  onPrimaryClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385085749880942624}
-        m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
-        m_MethodName: PrimaryClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onSecondaryClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385085749880942624}
-        m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
-        m_MethodName: ContextClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTertiaryClick:
-    m_PersistentCalls:
-      m_Calls: []
-  onMouseEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 758808689391853167}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 3929398274840160826}
-        m_TargetAssemblyTypeName: TooltipHandler, Assembly-CSharp
-        m_MethodName: ShowTooltip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onMouseExit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 758808689391853167}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3929398274840160826}
-        m_TargetAssemblyTypeName: TooltipHandler, Assembly-CSharp
-        m_MethodName: HideTooltip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onEscape:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onSpace:
-    m_PersistentCalls:
-      m_Calls: []
-  onKeyDown:
-    m_PersistentCalls:
-      m_Calls: []
-  onKeyUp:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1677142432931377375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,7 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineWidthMultiplier: 0.01
---- !u!114 &3929398274840160826
+--- !u!114 &6478916137757213890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -520,25 +386,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8814900622852560466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf07c2afcab6a84438dfe992361ec542, type: 3}
+  m_Script: {fileID: 11500000, guid: c4f29f8d1ee42724ea4978e0ca844b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipPrefab: {fileID: 2726288394981291819, guid: 8ee0b9a9ac44ca047b4832328f46f73f, type: 3}
-  onTooltipShow:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1677142432931377375}
-        m_TargetAssemblyTypeName: RegionView, Assembly-CSharp
-        m_MethodName: TooltipShow
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTooltipHide:
-    m_PersistentCalls:
-      m_Calls: []
+  selectedUiPrefab: {fileID: 1808082949010307935, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}

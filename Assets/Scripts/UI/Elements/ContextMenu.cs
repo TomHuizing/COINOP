@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -46,13 +47,16 @@ namespace UI.Elements
                 Destroy(gameObject);
             }
             rectTransform = GetComponent<RectTransform>();
+            Hide();
         }
 
-        public void Show(Vector2 position, string[] items, Action<int> callback)
+        public void Show(IEnumerable<NamedAction> items) => Show(items, Input.mousePosition);
+
+        public void Show(IEnumerable<NamedAction> items, Vector2 position)
         {
             clickBlocker.SetActive(true);
             gameObject.SetActive(true);
-            CreateMenuItems(items, callback);
+            CreateMenuItems(items);
 
             rectTransform.pivot = origin switch
             {
@@ -70,20 +74,19 @@ namespace UI.Elements
             rectTransform.position = position + actualOffset;
         }
 
-        private void CreateMenuItems(string[] items, Action<int> callback)
+        private void CreateMenuItems(IEnumerable<NamedAction> items)
         {
-            for (int i = 0; i < items.Length; i++)
+            foreach(var item in items)
             {
-                int index = i;
-                ContextMenuItem item = Instantiate(contextMenuItemPrefab);
-                item.Init(items[i]);
-                item.OnClick += () =>
+                ContextMenuItem menuItem = Instantiate(contextMenuItemPrefab);
+                menuItem.Init(item.Name, item.Enabled());
+                menuItem.OnClick += () =>
                 {
                     Hide();
-                    callback?.Invoke(index);
+                    item.Invoke();
                 };
-                item.transform.SetParent(transform);
-                menuItems.Add(item);
+                menuItem.transform.SetParent(transform);
+                menuItems.Add(menuItem);
             }
         }
 
@@ -109,11 +112,6 @@ namespace UI.Elements
         public bool IsShowing()
         {
             return gameObject.activeSelf;
-        }
-
-        void UpdatePosition(Vector2 mousePosition, RectTransform areaScope)
-        {
-            
         }
     }
 }

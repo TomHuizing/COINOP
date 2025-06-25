@@ -76,7 +76,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4292728534
-  m_fontColor: {r: 0.8392666, g: 0.8392666, b: 0.8679245, a: 1}
+  m_fontColor: {r: 0.18039216, g: 0.18039216, b: 0.18039216, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 2690371668576843146}
   - component: {fileID: 5687471248689305929}
   - component: {fileID: 5855770764067716102}
+  - component: {fileID: 7191382504937674907}
   m_Layer: 5
   m_Name: ContextMenuItemPrefab
   m_TagString: Untagged
@@ -386,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.15686275, b: 0.16470589, a: 1}
+  m_Color: {r: 0.6431373, g: 0.63529414, b: 0.47843137, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -449,3 +450,28 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7191382504937674907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880600268233710686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121028379d08fdb449b9ffd51422b62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindings:
+  - ColorName: 10
+    OverrideAlpha: 0
+    Alpha: 0
+    Renderers: []
+    Graphics:
+    - {fileID: 2690371668576843146}
+  - ColorName: 5
+    OverrideAlpha: 0
+    Alpha: 0
+    Renderers: []
+    Graphics:
+    - {fileID: 8079850548594965670}
