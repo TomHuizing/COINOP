@@ -1,12 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace Gameplay.Time
 {
     [CreateAssetMenu(fileName = "GameClock", menuName = "Singletons/GameClock")]
-    public class GameClock : ScriptableObject
+    public class GameClock : ScriptableSingleton<GameClock>
     {
         private CancellationTokenSource cts;
         private Task runClockTask;
@@ -16,7 +17,7 @@ namespace Gameplay.Time
         [SerializeField] private TickDuration tickDuration;
         [SerializeField] private CyclePeriod cyclePeriod;
 
-        public bool IsRunning { get; private set; }
+        public bool IsRunning { get; private set; } = false;
 
         public TimeSpan TickPeriod => TimeSpan.FromMinutes((int)tickPeriod);
         public TimeSpan CyclePeriod => TimeSpan.FromMinutes((int)cyclePeriod);
@@ -38,6 +39,7 @@ namespace Gameplay.Time
 
             cts = new();
             runClockTask = RunClock(cts.Token);
+            IsRunning = true;
 
         }
 
@@ -45,6 +47,7 @@ namespace Gameplay.Time
         {
             cts.Cancel();
             runClockTask.Wait();
+            IsRunning = false;
             if (!runClockTask.IsCompletedSuccessfully)
             {
                 foreach (Exception ex in runClockTask.Exception.InnerExceptions)
@@ -52,6 +55,22 @@ namespace Gameplay.Time
                     throw ex;
                 }
             }
+        }
+
+        public void Toggle()
+        {
+            if (IsRunning)
+                Stop();
+            else
+                Start();
+        }
+
+        public void SpeedUp()
+        {
+        }
+
+        public void SlowDown()
+        {
         }
 
         private async Task RunClock(CancellationToken token)
@@ -75,11 +94,5 @@ namespace Gameplay.Time
 
             }
         }
-
-        public Timer SetTimer(DateTime trigger) => new(this, trigger);
-        public Timer SetTimer(TimeSpan period) => SetTimer(Now + period);
-
-        public Decay SetDecay(float startValue, DateTime end, float finalValue = 0) => new(this, startValue, end, finalValue);
-        public Decay SetDecay(float startValue, TimeSpan period, float finalValue = 0) => SetDecay(startValue, Now + period, finalValue);
     }
 }

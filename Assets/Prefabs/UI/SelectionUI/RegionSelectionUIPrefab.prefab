@@ -229,7 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e85368ac94bef041b4c044bbb694738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
   controlText: {fileID: 1710870647070983640}
   supportText: {fileID: 5919389587958519463}
   infraText: {fileID: 106680530828353962}
@@ -245,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121028379d08fdb449b9ffd51422b62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttons: []
   bindings:
   - ColorName: 0
     OverrideAlpha: 0

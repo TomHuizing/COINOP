@@ -184,21 +184,23 @@ namespace Gameplay.Map
             EconomicActivity + value
         );
 
+        public RegionStats Lerp(RegionStats target, float t) => new
+        (
+            Mathf.Lerp(Control, target.Control, t),
+            Mathf.Lerp(Infrastructure, target.Infrastructure, t),
+            Mathf.Lerp(InsurgencyPresence, target.InsurgencyPresence, t),
+            Mathf.Lerp(PopularSupport, target.PopularSupport, t),
+            Mathf.Lerp(Stability, target.Stability, t),
+            Mathf.Lerp(IntelCoverage, target.IntelCoverage, t),
+            Mathf.Lerp(EconomicActivity, target.EconomicActivity, t)
+        );
+
+        public RegionStats Decay(float t) => Lerp(Zero, t);
+
         public override string ToString() => $"Control: {Control:F2}\nInfrastructure: {Infrastructure:F2}\n" +
                                               $"InsurgencyPresence: {InsurgencyPresence:F2}\nPopularSupport: {PopularSupport:F2}\n" +
                                               $"Stability: {Stability:F2}\nIntelCoverage: {IntelCoverage:F2}\n" +
                                               $"EconomicActivity: {EconomicActivity:F2}";
-
-        public static RegionStats Lerp(RegionStats a, RegionStats b, float t) => new
-        (
-            Mathf.Lerp(a.Control, b.Control, t),
-            Mathf.Lerp(a.Infrastructure, b.Infrastructure, t),
-            Mathf.Lerp(a.InsurgencyPresence, b.InsurgencyPresence, t),
-            Mathf.Lerp(a.PopularSupport, b.PopularSupport, t),
-            Mathf.Lerp(a.Stability, b.Stability, t),
-            Mathf.Lerp(a.IntelCoverage, b.IntelCoverage, t),
-            Mathf.Lerp(a.EconomicActivity, b.EconomicActivity, t)
-        );
 
         public static RegionStats Random => new
         (

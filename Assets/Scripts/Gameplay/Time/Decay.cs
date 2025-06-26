@@ -5,33 +5,27 @@ namespace Gameplay.Time
 {
     public class Decay
     {
+        private readonly Lerp lerp;
         private readonly float startValue;
         private readonly float finalValue;
-        private readonly DateTime end;
-        private readonly GameClock clock;
 
-        public float Value => Mathf.Lerp(startValue, finalValue, (float)(clock.Now - end).TotalMinutes / (float)(end - clock.Now).TotalMinutes);
-        public TimeSpan TimeLeft => end - clock.Now;
+        public float Value => Mathf.Lerp(startValue, finalValue, lerp.Value);
+        public TimeSpan TimeLeft => lerp.TimeLeft;
         public event Action OnEnd;
 
-        internal Decay(GameClock clock, float startValue, DateTime end, float finalValue)
+        public Decay(float startValue, TimeSpan period, float finalValue = 0) : this(startValue, GameClock.instance.Now + period, finalValue)
         {
-            this.clock = clock != null ? clock : throw new ArgumentNullException(nameof(clock));
+            if (GameClock.instance == null)
+                throw new ArgumentNullException(nameof(GameClock.instance), "GameClock instance must be initialized before creating a Decay.");
+        }
+        public Decay(float startValue, DateTime end, float finalValue = 0)
+        {
             this.startValue = startValue;
             this.finalValue = finalValue;
-            this.end = end;
-            clock.OnTick += Tick;
+            lerp = new Lerp(end);
+            lerp.OnEnd += () => OnEnd?.Invoke();
         }
 
-        private void Tick(DateTime time, TimeSpan delta)
-        {
-            if (time >= end)
-            {
-                clock.OnTick -= Tick;
-                OnEnd?.Invoke();
-            }
-        }
-
-        public void Cancel() => clock.OnTick -= Tick;
+        public void Cancel() => lerp.Cancel();
     }
 }

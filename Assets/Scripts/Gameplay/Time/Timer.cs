@@ -4,28 +4,36 @@ namespace Gameplay.Time
 {
     public class Timer
     {
-        private readonly GameClock clock;
         private readonly DateTime trigger;
 
         public DateTime Trigger => trigger;
         public event Action OnTrigger;
 
-        internal Timer(GameClock clock, DateTime trigger)
+        public Timer(TimeSpan period) : this(GameClock.instance.Now + period)
         {
-            this.clock = clock != null ? clock : throw new ArgumentNullException(nameof(clock));
+            if (GameClock.instance == null)
+                throw new ArgumentNullException(nameof(GameClock.instance), "GameClock instance must be initialized before creating a Timer.");
+        }
+
+        public Timer(DateTime trigger)
+        {
+            if (GameClock.instance == null)
+                throw new ArgumentNullException(nameof(GameClock.instance), "GameClock instance must be initialized before creating a Lerp.");
+            if (trigger <= GameClock.instance.Now)
+                throw new ArgumentException("Trigger must be in the future.", nameof(trigger));
             this.trigger = trigger;
-            clock.OnTick += Tick;
+            GameClock.instance.OnTick += Tick;
         }
 
         private void Tick(DateTime time, TimeSpan delta)
         {
             if (time >= trigger)
             {
-                clock.OnTick -= Tick;
+                GameClock.instance.OnTick -= Tick;
                 OnTrigger?.Invoke();
             }
         }
 
-        public void Cancel() => clock.OnTick -= Tick;
+        public void Cancel() => GameClock.instance.OnTick -= Tick;
     }
 }

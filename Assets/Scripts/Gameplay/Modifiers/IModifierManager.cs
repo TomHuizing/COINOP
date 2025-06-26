@@ -4,7 +4,6 @@ namespace Gameplay.Modifiers
 {
     public interface IModifierManager
     {
-        public bool ConditionsMet(IController source, IController target);
-        public IModifier Apply(IController source, IController target);
+        public bool TryApply(IController source, IController target, out IModifier modifier);
     }
 }

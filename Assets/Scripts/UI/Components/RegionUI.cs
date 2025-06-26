@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Map;
 using Gameplay.Units;
 using UI.Elements;
@@ -21,7 +22,7 @@ namespace UI.Components
                 new(() => $"Reinforce {Context.name}", () => Debug.Log($"Reinforcing unit {Context.name}")),
             });
 
-            SetTooltipText($"<B>{Controller.name}</B>\n\n{Controller.Stats}");
+            SetTooltipText(() => $"<B>{Controller.name}</B>" + (Controller.Modifiers.Count() > 0 ? "\n\n" + Controller.Modifiers.Select(x => x.Stats).Aggregate((a,b) => a + b) : ""));
         }
     }
 }
