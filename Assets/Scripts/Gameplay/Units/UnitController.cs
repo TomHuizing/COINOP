@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Common;
@@ -7,7 +8,6 @@ using Gameplay.Map;
 using Gameplay.Modifiers;
 using Gameplay.Modifiers.UnitRegion;
 using Gameplay.Selection;
-using Gameplay.Time;
 using UnityEngine;
 
 namespace Gameplay.Units
@@ -18,9 +18,10 @@ namespace Gameplay.Units
         [SerializeField] private ContextMenu contextMenu;
 
         private UnitModel model;
-        private readonly List<IModifierManager> modifierManagers = new();
+        private UnitModifierManager modifierManager;
 
-        public event Action OnChanged;
+        public event Action<RegionController> OnCurrentRegionChanged;
+        public event Action<IEnumerable<RegionController>> OnPathChanged;
 
         public string Name => model.Name;
         public string Description { get; private set; } = "Unit Controller";
@@ -34,18 +35,10 @@ namespace Gameplay.Units
 
         void Start()
         {
+            // moveController.OnCurrentRegionChanged += OnCurrentRegionChanged.Invoke;
+            // moveController.OnPathChanged += OnPathChanged.Invoke;
             model = new UnitModel(name);
-            modifierManagers.Add(new PresenceModifierManager());
-        }
-
-        void OnEnable()
-        {
-            GameClock.instance.OnTick += CheckModifierManagers;
-        }
-
-        void OnDisable()
-        {
-            GameClock.instance.OnTick -= CheckModifierManagers;
+            modifierManager = new(this);
         }
 
         public void ContextClick(Selectable selectable)
@@ -63,14 +56,5 @@ namespace Gameplay.Units
         {
             throw new NotImplementedException();
         }
-
-        private void CheckModifierManagers(DateTime now, TimeSpan delta)
-        {
-            foreach (IModifierManager manager in modifierManagers)
-            {
-                manager.TryApply(this, CurrentRegion, out _);
-            }
-        }
-
     }
 }

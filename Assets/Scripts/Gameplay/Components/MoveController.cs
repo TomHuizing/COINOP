@@ -26,11 +26,16 @@ namespace Gameplay.Components
             {
                 currentRegion = value; // Set the current region for the unit
                 onMove.Invoke(currentRegion.transform.position, false); // Reset the unit's position to the current region's position
+                OnCurrentRegionChanged?.Invoke(currentRegion);
             }
         }
 
         public IEnumerable<RegionController> Path => path; // Read-only property to access the path
         public float MoveSpeed { get => moveSpeed; set { moveSpeed = value; } } // Read-only property to access the move speed
+
+        public event Action<RegionController> OnCurrentRegionChanged;
+        public event Action<RegionController> OnTargetRegionChanged;
+        public event Action<IEnumerable<RegionController>> OnPathChanged;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -91,6 +96,7 @@ namespace Gameplay.Components
             if (path.Count > 0)
                 distLeft = Vector2.Distance(currentRegion.transform.position, path.First().transform.position); // Calculate the distance to the target region
             onPathChange.Invoke(path); // Invoke the path change event with the new path
+            OnPathChanged?.Invoke(path);
         }
 
         private void FindPath(RegionController start, RegionController goal)

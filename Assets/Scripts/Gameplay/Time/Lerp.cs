@@ -6,9 +6,13 @@ namespace Gameplay.Time
     public class Lerp
     {
         private readonly DateTime end;
+        private readonly DateTime start;
 
-        public float Value => Mathf.Lerp(0, 1, (float)(GameClock.instance.Now - end).TotalMinutes / (float)(end - GameClock.instance.Now).TotalMinutes);
+        public float Value => Mathf.Lerp(0, 1, (float)(TimeLeft / Duration));
         public TimeSpan TimeLeft => end - GameClock.instance.Now;
+        public TimeSpan Duration => end - start;
+        public DateTime Start => start;
+        public DateTime End => end;
         public event Action OnEnd;
 
         public Lerp(DateTime end)
@@ -17,6 +21,7 @@ namespace Gameplay.Time
                 throw new ArgumentNullException(nameof(GameClock.instance), "GameClock instance must be initialized before creating a Lerp.");
             if(end <= GameClock.instance.Now)
                 throw new ArgumentException("End time must be in the future.", nameof(end));
+            start = GameClock.instance.Now;
             this.end = end;
             GameClock.instance.OnTick += Tick;
         }
@@ -30,6 +35,7 @@ namespace Gameplay.Time
                 GameClock.instance.OnTick -= Tick;
                 OnEnd?.Invoke();
             }
+            Debug.Log(Value);
         }
 
         public void Cancel() => GameClock.instance.OnTick -= Tick;
