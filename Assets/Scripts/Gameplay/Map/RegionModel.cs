@@ -41,11 +41,9 @@ namespace Gameplay.Map
 
         public void AddModifier(IRegionModifier modifier)
         {
-            UnityEngine.Debug.Log("Add Modifier");
             if (modifier == null || modifier.Expired)
                 return;
             modifiers.Add(modifier);
-            UnityEngine.Debug.Log("Modifier added");
         }
 
         public void Simulate()

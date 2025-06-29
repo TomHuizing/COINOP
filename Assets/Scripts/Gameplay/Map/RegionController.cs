@@ -46,29 +46,6 @@ namespace Gameplay.Map
         }
 
         public void AddModifier(IRegionModifier modifier) => model.AddModifier(modifier);
-
-        // public bool RemoveModifier(IModifier modifier)
-        // {
-        //     if (modifier is IRegionModifier regionModifier)
-        //     {
-        //         return RemoveModifier(regionModifier);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError($"Modifier {modifier.GetType().Name} is not a valid modifier for region {name}.");
-        //         return false;
-        //     }
-        // }
-
-        // public bool RemoveModifier(IRegionModifier modifier) => modifiers.Remove(modifier);
-
-        // public void Simulate(DateTime now, TimeSpan delta)
-        // {
-        //     AddStats(modifiers
-        //         .Where(m => m.Persistence == ModifierPersistence.Sustained)
-        //         .Select(m => m.Stats)
-        //         .Aggregate((a, b) => a + b));
-        // }
     }
 
 }

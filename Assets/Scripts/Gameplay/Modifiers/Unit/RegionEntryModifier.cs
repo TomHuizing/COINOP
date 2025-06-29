@@ -10,7 +10,7 @@ namespace Gameplay.Modifiers.Unit
         private readonly RegionStats transientStats = new RegionStats().SetInsurgencyPresence(-0.5f).SetPopularSupport(0.2f);
         private readonly Lerp lerp = new(TimeSpan.FromHours(6));
 
-        public RegionStats Stats => transientStats.Lerp(RegionStats.Zero, lerp.Value);
+        public RegionStats Stats => transientStats.Decay(lerp.Value);
 
         public string SourceName => Source.Name;
         public string TargetName => Target.Name;
@@ -32,7 +32,6 @@ namespace Gameplay.Modifiers.Unit
         {
             Source = source != null ? source : throw new ArgumentNullException(nameof(source));
             Target = target != null ? target : throw new ArgumentNullException(nameof(target));
-            UnityEngine.Debug.Log("RegionEntryModifier");
             Target.AddModifier(this);
         }
     }

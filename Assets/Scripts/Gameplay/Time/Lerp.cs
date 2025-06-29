@@ -8,7 +8,7 @@ namespace Gameplay.Time
         private readonly DateTime end;
         private readonly DateTime start;
 
-        public float Value => Mathf.Lerp(0, 1, (float)(TimeLeft / Duration));
+        public float Value => 1 - (float)(TimeLeft / Duration);
         public TimeSpan TimeLeft => end - GameClock.instance.Now;
         public TimeSpan Duration => end - start;
         public DateTime Start => start;
@@ -35,7 +35,6 @@ namespace Gameplay.Time
                 GameClock.instance.OnTick -= Tick;
                 OnEnd?.Invoke();
             }
-            Debug.Log(Value);
         }
 
         public void Cancel() => GameClock.instance.OnTick -= Tick;
