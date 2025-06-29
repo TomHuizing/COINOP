@@ -7,6 +7,7 @@ namespace Gameplay.Modifiers
         where TSource : IController
     {
         public TSource Source { get; }
-        public bool TryApply(out IModifier modifier);
+        // public bool TryApply(out IModifier modifier);
+        public event Action<IModifier> OnModifier;
     }
 }

@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 3130887743777639563}
   - component: {fileID: 2429352221716781660}
   - component: {fileID: 3549207764395114803}
+  - component: {fileID: 2293159744120570891}
   m_Layer: 5
   m_Name: RegionSelectionUIPrefab
   m_TagString: Untagged
@@ -284,6 +285,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2293159744120570891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808082949010307935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870baf88e16e2464080bbb4ed0909bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1710870647070983640}
 --- !u!1 &2134563638404659504
 GameObject:
   m_ObjectHideFlags: 0

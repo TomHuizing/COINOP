@@ -1,65 +1,68 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using Gameplay.Common;
+using Gameplay.Modifiers;
+using Gameplay.Resources;
 using Gameplay.Time;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ResourceManager", menuName = "Singletons/ResourceManager")]
-public class ResourceManager : ScriptableObject
+public class ResourceManager : ScriptableSingleton<ResourceManager>, IController
 {
-    private readonly List<IResourceModifier> modifiers = new();
+    private ResourcePackage baseResources = new(100, 100, 100);
 
-    // Resource values
-    [SerializeField] private int supplies = 100;
-    [SerializeField] private int intel = 100;
-    [SerializeField] private int influence = 100;
+    private readonly List<IResourceModifier> modifiers = new();
 
     [SerializeField] private GameClock clock;
 
+    public string Name { get; } = "Resource Manager";
+    public string Description { get; } = "The resource manager.";
+    public string Id { get; } = "resource_manager";
+
     public event Action<int, int, int> OnResourceChanged;
 
-    public int Supplies => supplies;
-    public int Intel => intel;
-    public int Influence => influence;
+    public ResourcePackage Resources => baseResources + TransientSum;
 
-    public int SuppliesChange => modifiers.Select(m => m.Supplies).Sum();
-    public int IntelChange => modifiers.Select(m => m.Intel).Sum();
-    public int InfluenceChange => modifiers.Select(m => m.Influence).Sum();
+    public float Supplies => baseResources.Supplies;
+    public float Intel => baseResources.Intel;
+    public float Influence => baseResources.Influence;
+
+    public IEnumerable<IResourceModifier> Modifiers => modifiers.Where(m => !m.Expired);
+    public IEnumerable<IResourceModifier> TransientModifiers => Modifiers.Where(m => m.Persistence == ModifierPersistence.Transient);
+    public IEnumerable<IResourceModifier> SustainedModifiers => Modifiers.Where(m => m.Persistence == ModifierPersistence.Sustained);
+
+    public ResourcePackage TransientSum => TransientModifiers.Select(m => m.Resources).Aggregate(ResourcePackage.Zero, (a, b) => a + b);
+    public ResourcePackage SustainedSum => SustainedModifiers.Select(m => m.Resources).Aggregate(ResourcePackage.Zero, (a, b) => a + b);
+
+    void Awake()
+    {
+    }
 
     void OnEnable()
     {
-        if(clock != null)
-            clock.OnCycle += ModifyValues;
+        IController.Lookup[Id] = this;
+        GameClock.instance.OnCycle += (_,_) => Simulate();
+        
     }
 
-    void OnDisable()
+    public void AddModifier(IResourceModifier modifier)
     {
-        if(clock != null)
-            clock.OnCycle -= ModifyValues;
-    }
-
-    public void AddResources(int supplies, int intel, int influence)
-    {
-        this.supplies += supplies;
-        this.intel += intel;
-        this.influence += influence;
-        OnResourceChanged?.Invoke(supplies, intel, influence);
-    }
-
-    public void AddModifier(IResourceModifier modifier, CancellationToken cancellationToken)
-    {
-        if (cancellationToken.IsCancellationRequested)
-            return;
-        cancellationToken.Register(() => modifiers.Remove(modifier));
         modifiers.Add(modifier);
     }
 
-    private void ModifyValues(DateTime now, TimeSpan delta)
+    public void AddModifier(IModifier modifier)
     {
-        supplies += SuppliesChange;
-        intel += IntelChange;
-        influence += InfluenceChange;
-        OnResourceChanged?.Invoke(supplies, intel, influence);
+        if (modifier is IResourceModifier resourceModifier)
+            AddModifier(resourceModifier);
+        else
+            Debug.LogError($"Modifier {modifier.GetType().Name} is not a valid resource modifier");
+    }
+
+    public void Simulate()
+    {
+        modifiers.RemoveAll(m => m.Expired);
+        baseResources += SustainedSum;
     }
 }

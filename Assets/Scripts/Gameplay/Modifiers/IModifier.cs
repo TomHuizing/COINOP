@@ -1,6 +1,5 @@
 using System;
 using Gameplay.Common;
-using NUnit.Framework.Internal.Commands;
 
 namespace Gameplay.Modifiers
 {

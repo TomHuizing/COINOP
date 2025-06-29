@@ -18,7 +18,6 @@ namespace UI.Components
         private Func<string> getTooltipText;
 
         protected T Controller { get; private set; }
-        //protected string TooltipText { get; set; } = string.Empty;
         protected Selectable Context { get; private set; }
         protected Type ContextType { get; private set; }
 

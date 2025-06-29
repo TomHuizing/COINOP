@@ -17,7 +17,7 @@ namespace Gameplay.Modifiers.UnitRegion
         {
             Source = controller != null ? controller : throw new ArgumentNullException(nameof(controller));
             GameClock.instance.OnTick += Tick;
-            // applicators.Add(new PresenceApplicator(Source));
+            applicators.Add(new PresenceApplicator(Source));
             applicators.Add(new RegionEntryApplicator(Source));
         }
 
@@ -26,13 +26,13 @@ namespace Gameplay.Modifiers.UnitRegion
 
         public void Tick(DateTime now, TimeSpan delta)
         {
-            foreach (var applicator in applicators)
-            {
-                if (applicator.TryApply(out IModifier modifier))
-                {
-                    UnityEngine.Debug.Log($"{modifier.SourceName} -> {modifier.TargetName}: {modifier.Description}");
-                }
-            }
+            // foreach (var applicator in applicators)
+            // {
+            //     if (applicator.TryApply(out IModifier modifier))
+            //     {
+            //         UnityEngine.Debug.Log($"{modifier.SourceName} -> {modifier.TargetName}: {modifier.Description}");
+            //     }
+            // }
         }
     }
 

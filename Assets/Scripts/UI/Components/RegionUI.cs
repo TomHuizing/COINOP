@@ -22,7 +22,7 @@ namespace UI.Components
                 new(() => $"Reinforce {Context.name}", () => Debug.Log($"Reinforcing unit {Context.name}")),
             });
 
-            SetTooltipText(() => $"<B>{Controller.name}</B>" + (Controller.Modifiers.Count() > 0 ? "\n\n" + Controller.Modifiers.Select(x => x.Stats).Aggregate((a,b) => a + b) : ""));
+            SetTooltipText(() => $"<b>{Controller.name}</b>" + (Controller.Modifiers.Count() > 0 ? "\n\n<i>" + Controller.Modifiers.Select(x => x.Stats).Aggregate((a,b) => a + b) : "") + "</i>");
         }
     }
 }

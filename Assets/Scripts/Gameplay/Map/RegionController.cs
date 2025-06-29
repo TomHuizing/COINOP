@@ -18,6 +18,7 @@ namespace Gameplay.Map
 
         public string Name => model.Name;
         public string Description => $"Region: {model.Name}";
+        public string Id => Name.Replace(' ', '_').ToLower();
         public RegionStats Stats => model.CurrentStats;
         public IEnumerable<RegionController> Neighbors => neighbors;
         public IEnumerable<IRegionModifier> Modifiers => model.Modifiers;
@@ -31,6 +32,7 @@ namespace Gameplay.Map
 
         void Start()
         {
+            IController.Lookup[Id] = this;
             model.UpdateNeighbors(Neighbors.Select(x => x.model));
             GameClock.instance.OnCycle += (_,_) => model.Simulate();
         }

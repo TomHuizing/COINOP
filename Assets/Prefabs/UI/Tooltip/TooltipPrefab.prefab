@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121028379d08fdb449b9ffd51422b62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttons: []
   bindings:
   - ColorName: 0
     OverrideAlpha: 0
@@ -398,7 +399,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 2
   m_fontSizeMax: 40
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535

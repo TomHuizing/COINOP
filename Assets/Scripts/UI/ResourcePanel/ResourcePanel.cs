@@ -25,4 +25,11 @@ public class ResourcePanel : MonoBehaviour
         intelText.text = intel.ToString();
         influenceText.text = influence.ToString();
     }
+
+    void Update()
+    {
+        suppliesText.text = ResourceManager.instance.Supplies.ToString();
+        intelText.text = ResourceManager.instance.Intel.ToString();
+        influenceText.text = ResourceManager.instance.Influence.ToString();
+    }
 }

@@ -21,7 +21,7 @@ namespace UI.Selection
             set
             {
                 regionController = value;
-                controlText.text = regionController.Stats.Control.ToString("0%");
+                controlText.text = $"<link=\"{regionController.Id}\">{regionController.Stats.Control:0%}</link>";
                 supportText.text = regionController.Stats.PopularSupport.ToString("0%");
                 infraText.text = regionController.Stats.Infrastructure.ToString("0");
             }
@@ -30,7 +30,7 @@ namespace UI.Selection
         // Update is called once per frame
         void Update()
         {
-            controlText.text = regionController.Stats.Control.ToString("0%");
+            controlText.text = $"<link=\"{regionController.Id}\">{regionController.Stats.Control:0%}</link>";
             supportText.text = regionController.Stats.PopularSupport.ToString("0%");
             infraText.text = regionController.Stats.Infrastructure.ToString("0");
         }
