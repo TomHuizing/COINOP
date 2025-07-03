@@ -32,7 +32,8 @@ namespace UI.Interaction
                 return;
             }
             selectionPanel.SetActive(true);
-            selector.SetOptions(selectables.Select(s => s.Name));
+            // selector.SetOptions(selectables.Select(s => (s is ILinkable linkable) ? linkable.Link : s.Name));
+            selector.SetOptions(selectables.Select(s => s.ToString()));
             // UpdateView(selection[selectionIndex]);
         }
 

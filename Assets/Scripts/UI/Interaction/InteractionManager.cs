@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Common;
+using TMPro;
 using UI.Elements;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using ContextMenu = UI.Elements.ContextMenu;
 
 
@@ -13,7 +15,7 @@ namespace UI.Interaction
     {
         public static InteractionManager Instance;
 
-        private readonly HashSet<ISelectable> boxSelectables = new();
+        private readonly List<RaycastResult> raycastResults = new();
 
         private Vector2 mouseStartScreen;
         private Vector2 mouseStartWorld;
@@ -23,12 +25,17 @@ namespace UI.Interaction
         private bool isPrimaryDown = false;
         private Rect dragRect;
 
+        private ILinkable linkableUnderMouseOld;
+        private ILinkable linkableUnderMouse;
+
         private IHoverable hoverableUnderMouseOld;
         private IHoverable hoverableUnderMouse;
 
         private ITooltippable tooltippableUnderMouseOld;
         private ITooltippable tooltippableUnderMouse;
 
+        [SerializeField] private GraphicRaycaster graphicRaycaster;
+        [SerializeField] private EventSystem eventSystem;
         [SerializeField] private SelectionBox selectionBox;
         [SerializeField] private float deadZoneScreen;
         [SerializeField] private float deadZoneWorld;
@@ -46,8 +53,8 @@ namespace UI.Interaction
             mouseScreen = Input.mousePosition;
             mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
             hoverableUnderMouseOld = hoverableUnderMouse;
-            hoverableUnderMouse = GetObjectsUnderMouse<IHoverable>().FirstOrDefault();
-            tooltippableUnderMouse = GetObjectsUnderMouse<ITooltippable>().FirstOrDefault();
+            hoverableUnderMouse = GetAllUnderMouse<IHoverable>().FirstOrDefault();
+            tooltippableUnderMouse = GetAllUnderMouse<ITooltippable>().FirstOrDefault();
 
             if (hoverableUnderMouseOld != hoverableUnderMouse && !isDragging)
             {
@@ -66,6 +73,18 @@ namespace UI.Interaction
                 tooltippableUnderMouseOld = tooltippableUnderMouse;
             }
 
+            // linkableUnderMouse = GetLinksUnderMouse().FirstOrDefault();
+
+            // if (linkableUnderMouse != linkableUnderMouseOld && !isDragging)
+            // {
+            //     if (linkableUnderMouse is ITooltippable tooltippable)
+            //         Tooltip.Instance.Show(tooltippable);
+            //     else
+            //         Tooltip.Instance.Hide();
+            //     linkableUnderMouseOld = linkableUnderMouse;
+            // }
+
+
             CheckMouseButtonsUp();
             CheckMouseButtonsDown();
 
@@ -73,9 +92,9 @@ namespace UI.Interaction
                 CheckDrag();
         }
 
-        public void RegisterBoxSelectable(ISelectable selectable) => boxSelectables.Add(selectable);
-        public void DeregisterBoxSelectable(ISelectable selectable) => boxSelectables.Remove(selectable);
-        public bool IsBoxSelectable(ISelectable selectable) => boxSelectables.Contains(selectable);
+        // public void RegisterBoxSelectable(ISelectable selectable) => boxSelectables.Add(selectable);
+        // public void DeregisterBoxSelectable(ISelectable selectable) => boxSelectables.Remove(selectable);
+        // public bool IsBoxSelectable(ISelectable selectable) => boxSelectables.Contains(selectable);
 
         private void CheckMouseButtonsUp()
         {
@@ -90,10 +109,10 @@ namespace UI.Interaction
 
         private void CheckMouseButtonsDown()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (IsOverUI())
                 return;
             if (Input.GetMouseButtonDown(0))
-                PrimaryMouseDown();
+                    PrimaryMouseDown();
             if (Input.GetMouseButtonDown(1))
                 SecondaryMouseDown();
             if (Input.GetMouseButtonDown(2))
@@ -183,7 +202,7 @@ namespace UI.Interaction
         private void PrimaryClick()
         {
             ClickSelect();
-            var clickable = GetObjectsUnderMouse<IClickable>().FirstOrDefault();
+            var clickable = GetAllUnderMouse<IClickable>().FirstOrDefault();
             if (clickable != null)
                 clickable.Click(GetKeyModifiers());
         }
@@ -197,11 +216,11 @@ namespace UI.Interaction
                 .Where(c => c != null);
             if (contextable.Count() == 0)
             {
-                contextable = GetObjectsUnderMouse<IContextable>();
+                contextable = GetAllUnderMouse<IContextable>();
                 HandleContext(contextable, null);
                 return;
             }
-            HandleContext(contextable, GetObjectsUnderMouse<IInteractable>()?.FirstOrDefault()?.Controller);
+            HandleContext(contextable, GetAllUnderMouse<IInteractable>()?.FirstOrDefault()?.Controller);
         }
 
         private void ClickSelect()
@@ -209,7 +228,8 @@ namespace UI.Interaction
             var modifiers = GetKeyModifiers();
             if (modifiers == KeyModifiers.None)
             {
-                var selectables = GetObjectsUnderMouse<ISelectable>().Where(s => s.IsClickSelectable);
+                var selectables = GetAllUnderMouse<ISelectable>().Where(s => s.IsClickSelectable);
+                print(selectables.Count());
                 if (selectables.Count() == 1)
                     selectables.First().Select();
                 else if (selectables.Count() > 1)
@@ -219,12 +239,12 @@ namespace UI.Interaction
             }
             else if (modifiers.HasFlag(KeyModifiers.Shift))
             {
-                var selectables = GetObjectsUnderMouse<ISelectable>().Where(s => s.IsClickSelectable && s.IsMultiSelectable);
+                var selectables = GetAllUnderMouse<ISelectable>().Where(s => s.IsClickSelectable && s.IsMultiSelectable);
                 SelectionManager.instance.AddToSelection(selectables);
             }
             else if (modifiers.HasFlag(KeyModifiers.Ctrl))
             {
-                var selectables = GetObjectsUnderMouse<ISelectable>().Where(s => s.IsClickSelectable && s.IsSelected);
+                var selectables = GetAllUnderMouse<ISelectable>().Where(s => s.IsClickSelectable && s.IsSelected);
                 SelectionManager.instance.Deselect(selectables);
             }
         }
@@ -253,6 +273,19 @@ namespace UI.Interaction
             }
         }
 
+        private bool IsOverUI()
+        {
+            if (!EventSystem.current.IsPointerOverGameObject() || graphicRaycaster == null || eventSystem == null)
+                return false;
+            if (GetLinksUnderMouse<ILinkable>().Count() == 0)
+                return true;
+            return false;
+            
+        }
+
+        private IEnumerable<T> GetAllUnderMouse<T>() where T : IInteractable
+            => GetObjectsUnderMouse<T>().Union(GetLinksUnderMouse<T>()).Distinct();
+
         private IEnumerable<T> GetObjectsUnderMouse<T>() where T : IInteractable
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -268,8 +301,27 @@ namespace UI.Interaction
             return objects.Where(s => s.Layer == layer);
         }
 
+        private IEnumerable<T> GetLinksUnderMouse<T>() where T : IInteractable
+        {
+            if (!EventSystem.current.IsPointerOverGameObject() || graphicRaycaster == null || eventSystem == null)
+                return Enumerable.Empty<T>();
+            raycastResults.Clear();
+            graphicRaycaster.Raycast(new PointerEventData(eventSystem) { position = Input.mousePosition }, raycastResults);
+            IEnumerable<TextMeshProUGUI> tmps = raycastResults.Select(r => r.gameObject.GetComponent<TextMeshProUGUI>()).Where(t => t != null);
+            return GetIdsUnderMouse(tmps).Select(s => ILinkable.GetLinkable(s)).Where(l => l is T).Select(l => (T)l);
+        }
+
+        private IEnumerable<string> GetIdsUnderMouse(IEnumerable<TextMeshProUGUI> tmps) =>
+            tmps.Select(t =>
+            {
+                int linkIndex = TMP_TextUtilities.FindIntersectingLink(t, mouseScreen, null);
+                if (linkIndex < 0)
+                    return string.Empty;
+                return t.textInfo.linkInfo[linkIndex].GetLinkID();
+            }).Where(s => !string.IsNullOrEmpty(s));
+
         private IEnumerable<ISelectable> GetSelectablesInRect(Rect rect)
-            => boxSelectables.Where(s => s.IsMultiSelectable && rect.Contains(s.Position));
+            => ISelectable.BoxSelectables.Where(s => s.IsMultiSelectable && rect.Contains(s.Position));
 
         private KeyModifiers GetKeyModifiers()
         {

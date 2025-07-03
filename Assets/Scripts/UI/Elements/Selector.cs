@@ -177,47 +177,6 @@ namespace UI.Elements
             Index = 0;
         }
 
-        // public void AddOptions(List<OptionItem> optionList)
-        // {
-        //     options.AddRange(optionList);
-        //     UpdateSelector();
-        // }
-
-        // public void AddOptions(List<string> optionList)
-        // {
-        //     // for (int i = 0; i < optionList.Count; i++)
-        //     // {
-        //     //     options.Add(new OptionItem(optionList[i]));
-        //     // }
-        //     options.AddRange(optionList.Select(o => new OptionItem(o)));     
-        //     UpdateSelector();        
-        // }
-
-        // public void AddOptions(List<Sprite> optionList)
-        // {
-        //     // for (int i = 0; i < optionList.Count; i++)
-        //     // {
-        //     //     options.Add(new OptionItem(optionList[i]));
-        //     // }  
-        //     options.AddRange(optionList.Select(o => new OptionItem(o)));
-        //     UpdateSelector();             
-        // }
-
-        // public void ClearOptions()
-        // {
-        //     options.Clear();
-        //     UpdateSelector();
-        // }
-
-        // void SetCurrentOptions(int newCurrentIndex)
-        // {
-        //     currentIndex = newCurrentIndex;            
-        //     SetOptions();
-        //     if (hasIndicator && (indicator != null))
-        //     {
-        //         indicator.text = (currentIndex + 1) + " / " + options.Count;
-        //     }
-        // }
         void UpdateSelector()
         {
             if (options.Count > 1)

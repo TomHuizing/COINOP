@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,6 +7,13 @@ namespace UI.Interaction
 {
     public interface ISelectable : IInteractable
     {
+        private static readonly HashSet<ISelectable> boxSelectables = new();
+
+        protected static void RegisterBoxSelectable(ISelectable selectable) => boxSelectables.Add(selectable);
+        protected static void DeregisterBoxSelectable(ISelectable selectable) => boxSelectables.Remove(selectable);
+
+        public static IEnumerable<ISelectable> BoxSelectables => boxSelectables;
+
         public Vector2 Position { get; }
 
         public bool IsClickSelectable { get; }

@@ -76,6 +76,8 @@ namespace UI.Components
             OnUnhover?.Invoke(this);
         }
 
+        public override string ToString() => controller.Name;
+
         public class CreateMissionItem : IContextMenuItem
         {
             public string Text => "Create mission";

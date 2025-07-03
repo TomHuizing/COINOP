@@ -13,12 +13,12 @@ namespace UI.Components
 {
     [RequireComponent(typeof(MoveController))]
     [RequireComponent(typeof(UnitController))]
-    //public class UnitUI : SelectableUi<UnitController>
     public class UnitUI : MonoBehaviour,
         ISelectable,
         IContextable,
         ITooltippable,
-        IHoverable
+        IHoverable,
+        ILinkable
 
     {
         [SerializeField] private UnitSelectionUi selectionUiPrefab;
@@ -43,6 +43,10 @@ namespace UI.Components
 
         public bool IsHovered { get; private set; }
 
+        public string Id { get; } = Guid.NewGuid().ToString();
+
+        public string Link => $"<link=\"{Id}\"><u>{controller.Name}</u></link>";
+
         public event Action<ISelectable> OnSelected;
         public event Action<ISelectable> OnDeselected;
         public event Action<IHoverable> OnHover;
@@ -57,7 +61,9 @@ namespace UI.Components
             OnDeselected += _ => onDeselected.Invoke();
             OnHover += _ => onHover.Invoke();
             OnUnhover += _ => onUnhover.Invoke();
-            InteractionManager.Instance.RegisterBoxSelectable(this);
+            // InteractionManager.Instance.RegisterBoxSelectable(this);
+            ISelectable.RegisterBoxSelectable(this);
+            ILinkable.RegisterLinkable(this);
         }
 
         public void ApplySelectionUi(Transform parent)
@@ -104,6 +110,8 @@ namespace UI.Components
             IsHovered = false;
             OnUnhover?.Invoke(this);
         }
+
+        public override string ToString() => Link;
 
         private class MoveItem : IContextMenuItem
         {
