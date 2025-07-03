@@ -14,12 +14,6 @@ namespace UI.Interaction
 
         ISelectable[] selection;
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         void OnEnable() => selectionManager.OnSelectionChanged += SelectionChanged;
         void OnDisable() => selectionManager.OnSelectionChanged -= SelectionChanged;
 
@@ -32,9 +26,7 @@ namespace UI.Interaction
                 return;
             }
             selectionPanel.SetActive(true);
-            // selector.SetOptions(selectables.Select(s => (s is ILinkable linkable) ? linkable.Link : s.Name));
             selector.SetOptions(selectables.Select(s => s.ToString()));
-            // UpdateView(selection[selectionIndex]);
         }
 
         public void UpdateView(int index)
