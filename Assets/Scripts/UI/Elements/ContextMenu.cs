@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Interaction;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UI.Elements
 {
-    [ExecuteAlways]
     public class ContextMenu : MonoBehaviour, IPointerDownHandler
     {
         static public ContextMenu Instance { get; private set; }
@@ -50,9 +50,9 @@ namespace UI.Elements
             Hide();
         }
 
-        public void Show(IEnumerable<NamedAction> items) => Show(items, Input.mousePosition);
+        public void Show(IEnumerable<IContextMenuItem> items) => Show(items, Input.mousePosition);
 
-        public void Show(IEnumerable<NamedAction> items, Vector2 position)
+        public void Show(IEnumerable<IContextMenuItem> items, Vector2 position)
         {
             clickBlocker.SetActive(true);
             gameObject.SetActive(true);
@@ -74,16 +74,16 @@ namespace UI.Elements
             rectTransform.position = position + actualOffset;
         }
 
-        private void CreateMenuItems(IEnumerable<NamedAction> items)
+        private void CreateMenuItems(IEnumerable<IContextMenuItem> items)
         {
             foreach(var item in items)
             {
                 ContextMenuItem menuItem = Instantiate(contextMenuItemPrefab);
-                menuItem.Init(item.Name, item.Enabled());
+                menuItem.Init(item.Text, item.Enabled);
                 menuItem.OnClick += () =>
                 {
                     Hide();
-                    item.Invoke();
+                    item.Select();
                 };
                 menuItem.transform.SetParent(transform);
                 menuItems.Add(menuItem);

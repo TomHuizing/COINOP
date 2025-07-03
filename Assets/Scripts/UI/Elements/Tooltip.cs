@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using TMPro;
+using UI.Interaction;
 
 namespace UI.Elements
 {
@@ -28,7 +29,7 @@ namespace UI.Elements
 
         private RectTransform rectTransform;
         private Coroutine delayedShowCoroutine;
-        // private GameObject view;
+        private ITooltippable tooltippable;
          
         public string DescriptionValue
         {
@@ -60,12 +61,21 @@ namespace UI.Elements
 
         void Update()
         {
-            if(view.activeSelf)
+            if (view.activeSelf)
+            {
                 UpdatePosition(Input.mousePosition);
+                if (tooltippable != null)
+                    DescriptionValue = tooltippable.TooltipText;
+            }
         }
 
-        public void Show()
+        public void Show(ITooltippable tooltippable)
         {
+            this.tooltippable = tooltippable;
+            if (this.tooltippable != null)
+                DescriptionValue = tooltippable.TooltipText;
+            else
+                DescriptionValue = string.Empty;
             if (delay > 0)
             {
                 Hide();

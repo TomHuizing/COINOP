@@ -12,11 +12,9 @@ GameObject:
   - component: {fileID: 4999407892184147358}
   - component: {fileID: 8641893836012721916}
   - component: {fileID: 9210239539434323899}
-  - component: {fileID: 5841377123789295700}
   - component: {fileID: 4653777412795077439}
   - component: {fileID: 2723275337900523488}
   - component: {fileID: 5981370566446540995}
-  - component: {fileID: 450950218339929231}
   m_Layer: 0
   m_Name: UnitPrefab
   m_TagString: Untagged
@@ -81,71 +79,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759685b4614cbbe468e1b8fc1a4003f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedUiPrefab: {fileID: 4707354245386232622, guid: 683461f0be0611444b627dd05f02718d, type: 3}
---- !u!114 &5841377123789295700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8851f7c9896874589093583ea7dd1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectionManager: {fileID: 11400000, guid: 05ae72c7ca11b7f4abd1b443a38fbecf, type: 2}
-  isMultiSelectable: 1
-  layer: 1
+  selectionUiPrefab: {fileID: 3421089113393157627, guid: 683461f0be0611444b627dd05f02718d, type: 3}
   onSelected:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: set_ShowMoveLine
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  onDeselected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8641893836012721916}
-        m_TargetAssemblyTypeName: UnitView, Assembly-CSharp
-        m_MethodName: set_ShowMoveLine
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onContextClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4999407892184147358}
-        m_TargetAssemblyTypeName: UnitController, Assembly-CSharp
-        m_MethodName: ContextClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onContextAlternate:
-    m_PersistentCalls:
       m_Calls: []
-  onContextMenu:
+  onDeselected:
     m_PersistentCalls:
       m_Calls: []
   onHover:
@@ -366,23 +304,6 @@ MonoBehaviour:
   onPathChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &450950218339929231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025838651697782992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a6917206ec38449975be57f9e89767, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  description: 
-  supplies: -1
-  intel: 1
-  influence: 0
-  resourceManager: {fileID: 11400000, guid: b5e8600da307a43468752f42ee49d6c3, type: 2}
 --- !u!1 &3564708152328388063
 GameObject:
   m_ObjectHideFlags: 0

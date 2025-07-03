@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,7 +47,7 @@ namespace RainbowArt.CleanFlatUI
         bool hasText = true;
 
         [SerializeField]
-        TextMeshProUGUI text;  
+        TextMeshProUGUI text;
 
         [SerializeField]
         Image foreground;
@@ -66,7 +66,7 @@ namespace RainbowArt.CleanFlatUI
 
         [SerializeField]
         bool patternForward = true;
-        
+
         [SerializeField]
         float patternScale = 5;
 
@@ -77,7 +77,7 @@ namespace RainbowArt.CleanFlatUI
             get => currentValue;
             set
             {
-                if(currentValue == value)
+                if (currentValue == value)
                 {
                     return;
                 }
@@ -85,13 +85,13 @@ namespace RainbowArt.CleanFlatUI
                 OnValueChanged();
             }
         }
-        
+
         public float MaxValue
         {
             get => maxValue;
             set
             {
-                if(maxValue == value)
+                if (maxValue == value)
                 {
                     return;
                 }
@@ -113,7 +113,7 @@ namespace RainbowArt.CleanFlatUI
                 UpdateText();
             }
         }
-        
+
         public bool PatternPlay
         {
             get => patternPlay;
@@ -139,7 +139,7 @@ namespace RainbowArt.CleanFlatUI
             {
                 patternForward = value;
             }
-        }       
+        }
 
         public float PatternScale
         {
@@ -152,17 +152,17 @@ namespace RainbowArt.CleanFlatUI
 
         void OnValueChanged()
         {
-            if(maxValue < 0)
+            if (maxValue < 0)
             {
                 maxValue = 100.0f;
             }
-            if(currentValue < 0)
+            if (currentValue < 0)
             {
                 currentValue = 0f;
-            }            
+            }
             currentValue = Mathf.Clamp(currentValue, 0, maxValue);
             Rect r = patternImage.uvRect;
-            r.width = (currentValue / maxValue)*patternScale;
+            r.width = (currentValue / maxValue) * patternScale;
             patternImage.uvRect = r;
             UpdateGUI();
         }
@@ -174,23 +174,23 @@ namespace RainbowArt.CleanFlatUI
 
         void Update()
         {
-            if(Application.isPlaying)
+            if (Application.isPlaying)
             {
                 UpdateGUI();
             }
             else
             {
-                if(bDelayedUpdate)
+                if (bDelayedUpdate)
                 {
                     bDelayedUpdate = false;
                     OnValueChanged();
                 }
-            }   
+            }
         }
-         
+
         void UpdateGUI()
-        {            
-            UpdateForegroundAndPattern();  
+        {
+            UpdateForegroundAndPattern();
             UpdateText();
         }
 
@@ -199,12 +199,12 @@ namespace RainbowArt.CleanFlatUI
             foreground.fillAmount = currentValue / maxValue;
             float maxWidth = foreground.GetComponent<RectTransform>().rect.width;
             Vector2 offsetMax = patternRect.offsetMax;
-            offsetMax.x = -(maxWidth - maxWidth*(currentValue / maxValue));
-            patternRect.offsetMax = offsetMax;            
-            if(patternPlay)
+            offsetMax.x = -(maxWidth - maxWidth * (currentValue / maxValue));
+            patternRect.offsetMax = offsetMax;
+            if (patternPlay)
             {
                 Rect r = patternImage.uvRect;
-                if(patternForward)
+                if (patternForward)
                 {
                     r.x -= Time.deltaTime * patternSpeed;
                 }
@@ -212,17 +212,17 @@ namespace RainbowArt.CleanFlatUI
                 {
                     r.x += Time.deltaTime * patternSpeed;
                 }
-                r.width = (currentValue / maxValue)*patternScale;
+                r.width = (currentValue / maxValue) * patternScale;
                 patternImage.uvRect = r;
             }
             else
             {
                 Rect r = patternImage.uvRect;
-                r.width = (currentValue / maxValue)*patternScale;
+                r.width = (currentValue / maxValue) * patternScale;
                 patternImage.uvRect = r;
-            } 
+            }
         }
- 
+
         void UpdateText()
         {
             if (text != null && text.gameObject.activeSelf != hasText)
@@ -231,15 +231,15 @@ namespace RainbowArt.CleanFlatUI
             }
             if (hasText && (text != null))
             {
-                text.text = (int)((currentValue/maxValue)*100) + "%";
+                text.text = (int)((currentValue / maxValue) * 100) + "%";
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected void OnValidate()
         {
             bDelayedUpdate = true;      
         }
-        #endif
+#endif
     }
 }

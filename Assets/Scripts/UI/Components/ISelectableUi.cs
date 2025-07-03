@@ -1,9 +1,9 @@
-using UnityEngine;
+// using UnityEngine;
 
-namespace UI.Components
-{
-    public interface ISelectableUi
-    {
-        public void ApplySelectionUi(GameObject parent);
-    }
-}
+// namespace UI.Components
+// {
+//     public interface ISelectableUi
+//     {
+//         public void ApplySelectionUi(GameObject parent);
+//     }
+// }

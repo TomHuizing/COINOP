@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5500410247793345096}
   - component: {fileID: 7616286881899936953}
   - component: {fileID: 758808689391853167}
-  - component: {fileID: 385085749880942624}
   - component: {fileID: 1677142432931377375}
   - component: {fileID: 6478916137757213890}
   m_Layer: 0
@@ -276,7 +275,7 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &385085749880942624
+--- !u!114 &1677142432931377375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,17 +284,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 8814900622852560466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8851f7c9896874589093583ea7dd1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 35316611058cd2b47b820ab733f1a60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionManager: {fileID: 11400000, guid: 05ae72c7ca11b7f4abd1b443a38fbecf, type: 2}
-  isMultiSelectable: 0
-  layer: 0
+  lineWidthMultiplier: 0.01
+--- !u!114 &6478916137757213890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8814900622852560466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f29f8d1ee42724ea4978e0ca844b1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionUIPrefab: {fileID: 3130887743777639563, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}
   onSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 731606639711993138}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
@@ -321,15 +331,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onContextClick:
-    m_PersistentCalls:
-      m_Calls: []
-  onContextAlternate:
-    m_PersistentCalls:
-      m_Calls: []
-  onContextMenu:
-    m_PersistentCalls:
-      m_Calls: []
   onHover:
     m_PersistentCalls:
       m_Calls:
@@ -360,33 +361,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onFillSelectionPanel:
-    m_PersistentCalls:
-      m_Calls: []
-  selectedUiPrefab: {fileID: 1808082949010307935, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}
---- !u!114 &1677142432931377375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8814900622852560466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35316611058cd2b47b820ab733f1a60d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineWidthMultiplier: 0.01
---- !u!114 &6478916137757213890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8814900622852560466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4f29f8d1ee42724ea4978e0ca844b1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedUiPrefab: {fileID: 1808082949010307935, guid: cd0495f99d5b49046850f955f66c43fe, type: 3}

@@ -8,7 +8,6 @@ using Gameplay.Map;
 using Gameplay.Modifiers;
 using Gameplay.Modifiers.Unit;
 using Gameplay.Modifiers.UnitRegion;
-using Gameplay.Selection;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 
@@ -61,12 +60,6 @@ namespace Gameplay.Units
         void OnDestroy()
         {
             OnDestroyed?.Invoke();
-        }
-
-        public void ContextClick(Selectable selectable)
-        {
-            if (selectable.TryGetComponent(out RegionController regionController))
-                moveController.SetTarget(regionController);
         }
 
         public void AddModifier(IModifier modifier)

@@ -99,6 +99,18 @@ namespace Gameplay.Components
             OnPathChanged?.Invoke(path);
         }
 
+        public void AddTarget(RegionController target)
+        {
+            if (target == null)
+                return; // Check if the target region is valid
+            if (path.Count == 0)
+            {
+                SetTarget(target);
+                return;
+            }
+            
+        }
+
         private void FindPath(RegionController start, RegionController goal)
         {
             var openSet = new List<RegionController>();
