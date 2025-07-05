@@ -25,14 +25,13 @@ namespace UI.Interaction
         private bool isPrimaryDown = false;
         private Rect dragRect;
 
-        private ILinkable linkableUnderMouseOld;
-        private ILinkable linkableUnderMouse;
-
         private IHoverable hoverableUnderMouseOld;
         private IHoverable hoverableUnderMouse;
 
-        private ITooltippable tooltippableUnderMouseOld;
-        private ITooltippable tooltippableUnderMouse;
+        private ITooltip tooltip;
+        // private ITooltippable tooltippableUnderMouseOld;
+        
+        // private ITooltippable tooltippableUnderMouse;
 
         [SerializeField] private GraphicRaycaster graphicRaycaster;
         [SerializeField] private EventSystem eventSystem;
@@ -54,7 +53,7 @@ namespace UI.Interaction
             mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
             hoverableUnderMouseOld = hoverableUnderMouse;
             hoverableUnderMouse = GetAllUnderMouse<IHoverable>().FirstOrDefault();
-            tooltippableUnderMouse = GetAllUnderMouse<ITooltippable>().FirstOrDefault();
+            ITooltippable tooltippableUnderMouse = GetAllUnderMouse<ITooltippable>().FirstOrDefault();
 
             if (hoverableUnderMouseOld != hoverableUnderMouse && !isDragging)
             {
@@ -63,27 +62,37 @@ namespace UI.Interaction
                 if (hoverableUnderMouse != null)
                     hoverableUnderMouse.Hover();
             }
-
-            if (tooltippableUnderMouseOld != tooltippableUnderMouse && !isDragging)
+            if (tooltippableUnderMouse == null)
             {
-                if (tooltippableUnderMouse != null)
-                    Tooltip.Instance.Show(tooltippableUnderMouse);
-                else
-                    Tooltip.Instance.Hide();
-                tooltippableUnderMouseOld = tooltippableUnderMouse;
+                if (tooltip != null)
+                {
+                    tooltip.Destroy();
+                    tooltip = null;
+                }
+            }
+            else
+            {
+                if (tooltip == null || tooltip.Source != tooltippableUnderMouse)
+                {
+                    if (tooltip != null)
+                    {
+                        tooltip.Destroy();
+                        tooltip = null;
+                    }
+                    tooltip = TooltipManager.Instance.ShowTooltip(tooltippableUnderMouse);
+                }
             }
 
-            // linkableUnderMouse = GetLinksUnderMouse().FirstOrDefault();
-
-            // if (linkableUnderMouse != linkableUnderMouseOld && !isDragging)
-            // {
-            //     if (linkableUnderMouse is ITooltippable tooltippable)
-            //         Tooltip.Instance.Show(tooltippable);
-            //     else
-            //         Tooltip.Instance.Hide();
-            //     linkableUnderMouseOld = linkableUnderMouse;
-            // }
-
+            // if (tooltippableUnderMouseOld != tooltippableUnderMouse && !isDragging)
+            //     {
+            //         if (tooltip != null)
+            //             tooltip.Destroy();
+            //         if (tooltippableUnderMouse != null)
+            //             tooltip = TooltipManager.Instance.ShowTooltip(tooltippableUnderMouse);
+            //         else
+            //             TooltipManager.Instance.Hide();
+            //         tooltippableUnderMouseOld = tooltippableUnderMouse;
+            //     }
 
             CheckMouseButtonsUp();
             CheckMouseButtonsDown();
@@ -91,10 +100,6 @@ namespace UI.Interaction
             if (isPrimaryDown)
                 CheckDrag();
         }
-
-        // public void RegisterBoxSelectable(ISelectable selectable) => boxSelectables.Add(selectable);
-        // public void DeregisterBoxSelectable(ISelectable selectable) => boxSelectables.Remove(selectable);
-        // public bool IsBoxSelectable(ISelectable selectable) => boxSelectables.Contains(selectable);
 
         private void CheckMouseButtonsUp()
         {

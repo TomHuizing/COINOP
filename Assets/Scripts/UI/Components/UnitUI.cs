@@ -5,6 +5,7 @@ using Gameplay.Common;
 using Gameplay.Components;
 using Gameplay.Map;
 using Gameplay.Units;
+using UI.Elements;
 using UI.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,7 @@ namespace UI.Components
         ILinkable
 
     {
+        [SerializeField] private Tooltip tooltipPrefab;
         [SerializeField] private UnitSelectionUi selectionUiPrefab;
         [SerializeField] private UnityEvent onSelected;
         [SerializeField] private UnityEvent onDeselected;
@@ -112,6 +114,14 @@ namespace UI.Components
         }
 
         public override string ToString() => Link;
+
+        public ITooltip CreateTooltip()
+        {
+            var tooltip = Instantiate(tooltipPrefab);
+            tooltip.Source = this;
+            tooltip.Text = Link;
+            return tooltip;
+        }
 
         private class MoveItem : IContextMenuItem
         {

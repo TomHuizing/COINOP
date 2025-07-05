@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UI.Elements;
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace UI.Interaction
 
         public void UpdateView(int index)
         {
-            foreach(RectTransform child in viewParent.transform)
+            foreach (RectTransform child in viewParent.transform)
             {
                 Destroy(child.gameObject);
             }

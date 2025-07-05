@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Common;
 using Gameplay.Map;
+using UI.Elements;
 using UI.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
@@ -77,6 +78,11 @@ namespace UI.Components
         }
 
         public override string ToString() => controller.Name;
+
+        public ITooltip CreateTooltip()
+        {
+            throw new NotImplementedException();
+        }
 
         public class CreateMissionItem : IContextMenuItem
         {
